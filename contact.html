@@ -278,7 +278,6 @@ header.hide{transform:translateY(-100%)}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 
@@ -509,19 +508,14 @@ document.getElementById('contact-form').addEventListener('submit', async e => {
   const phone   = document.getElementById('cf-phone').value.trim();
   const message = document.getElementById('cf-message').value.trim();
 
-  /* ── Formspree: create free account at formspree.io, get your form ID
-     then replace YOUR_FORM_ID below ──
+  // Send to Formspree
   try {
-    await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+    await fetch('https://formspree.io/f/mgoblebo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ name, company, email, phone, message })
     });
   } catch(err) { console.error(err); }
-  ── */
-
-  // simulate network delay
-  await new Promise(r => setTimeout(r, 900));
 
   // hide form, show success — user stays on page
   gsap.to('#contact-form', {opacity:0, y:-20, duration:.4, ease:'power2.in', onComplete:()=>{
@@ -541,17 +535,6 @@ document.querySelectorAll('.cf-submit').forEach(btn=>{
 /* CLOCK */
 function updateClock(){const el=document.getElementById('cp-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
 setInterval(updateClock,1000);updateClock();
-</script>
-<script>
-if (window.netlifyIdentity) {
-  window.netlifyIdentity.on("init", user => {
-    if (!user) {
-      window.netlifyIdentity.on("login", () => {
-        document.location.href = "/admin/";
-      });
-    }
-  });
-}
 </script>
 </body>
 </html>
