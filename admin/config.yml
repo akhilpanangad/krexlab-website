@@ -1,0 +1,57 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+
+  # ── WORK / PROJECTS ──
+  - name: "projects"
+    label: "Work Projects"
+    folder: "_projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Project Title", name: "title", widget: "string" }
+      - { label: "Category Tag", name: "tag", widget: "string", hint: "e.g. Branding · Art Direction" }
+      - { label: "Category Filter", name: "category", widget: "select", options: ["branding", "uiux", "motion", "ai"] }
+      - { label: "Year", name: "year", widget: "string", default: "2026" }
+      - { label: "Short Description", name: "description", widget: "text" }
+      - { label: "Cover Image", name: "cover", widget: "image" }
+      - { label: "Card Colour Tint", name: "tint", widget: "select", options: ["tint-teal", "tint-blue", "tint-amber", "tint-purple", "tint-coral", "tint-green"], default: "tint-teal" }
+      - { label: "Project Page URL", name: "url", widget: "string", required: false, hint: "e.g. project-boxigo.html" }
+
+  # ── SERVICES ──
+  - name: "services"
+    label: "Services"
+    folder: "_services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Service Name", name: "title", widget: "string" }
+      - { label: "Number", name: "number", widget: "string", hint: "e.g. 01" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Pills / Tags", name: "pills", widget: "list", hint: "e.g. Logo Design, Brand Guidelines" }
+
+  # ── SITE SETTINGS ──
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "General"
+        name: "general"
+        file: "_data/settings.json"
+        fields:
+          - { label: "Studio Name", name: "studio_name", widget: "string", default: "Krexlab" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string", default: "+91 79075 90856" }
+          - { label: "Email", name: "email", widget: "string", default: "hello@krexlab.in" }
+          - { label: "WhatsApp Number", name: "whatsapp", widget: "string", default: "917907590856" }
+          - { label: "Instagram URL", name: "instagram", widget: "string" }
+          - { label: "LinkedIn URL", name: "linkedin", widget: "string" }
+          - { label: "Behance URL", name: "behance", widget: "string" }
+          - label: "Currently Taking Projects"
+            name: "available"
+            widget: "boolean"
+            default: true

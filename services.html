@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Krexlab Studio</title>
+<meta name="description" content="Branding, UI/UX web design, AI video ads, social media design, motion graphics and digital marketing. See what Krexlab can do for your business.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ── DESIGN SYSTEM CORE ── */
+:root{
+  --mint:#4dd4a8;--mint-soft:#3cb28d;
+  --bg:#07181f;--bg-soft:#0c2530;
+  --ink:#f4f7f6;--muted:#8ba2ab;
+  --border:rgba(255,255,255,.06);
+  --ff:'Outfit',ui-sans-serif,system-ui,sans-serif;
+  --ff-serif:'Instrument Serif',ui-serif,Georgia,serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:96px 96px;
+}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+::-webkit-scrollbar{width:0;background:transparent}
+
+/* CURSOR */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--mint);border-radius:9999px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(77,212,168,.55);border-radius:9999px;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.2,.8,.2,1),height .3s,border-color .3s,background .3s}
+.cursor-ring.is-hover{width:72px;height:72px;background:rgba(77,212,168,.08);border-color:rgba(77,212,168,.8)}
+@media(max-width:768px){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+
+/* CANVAS */
+#particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:.5}
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 65% 55% at 10% 50%,rgba(77,212,168,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 45% 40% at 88% 18%,rgba(77,212,168,.05) 0%,transparent 55%)}
+
+/* HEADER */
+header{position:fixed;top:0;inset-inline:0;z-index:50;padding:20px 5vw;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,border-color .5s,transform .55s;border-bottom:1px solid transparent}
+header.scrolled{padding:12px 5vw;background:rgba(7,24,31,.7);backdrop-filter:blur(20px);border-color:rgba(255,255,255,.05)}
+header.hide{transform:translateY(-100%)}
+.nav-logo img{height:24px;width:auto;display:block}
+.nav-links{display:flex;align-items:center;gap:2vw}
+.nav-links a{font-size:.82rem;font-weight:400;color:rgba(255,255,255,.7);text-decoration:none;transition:color .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--mint)}
+.nav-cta{padding:9px 20px;border-radius:9999px;background:var(--mint);color:#07181f!important;font-weight:500!important;transition:background .3s!important}
+.nav-cta:hover{background:#fff!important}
+.nav-mob-btn{display:none;width:40px;height:40px;border-radius:9999px;background:var(--mint);color:#07181f;align-items:center;justify-content:center;border:none;cursor:pointer;flex-direction:column;gap:3px}
+.mob-line{display:block;width:16px;height:2px;background:#07181f}
+@media(max-width:768px){.nav-links{display:none}.nav-mob-btn{display:flex}}
+
+/* MOBILE MENU */
+#mob-overlay{position:fixed;inset:0;z-index:59;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .5s}
+#mob-overlay.show{opacity:1;pointer-events:all}
+#mob-menu{position:fixed;top:0;right:0;bottom:0;width:min(320px,85vw);z-index:60;background:#0a1e28;border-left:1px solid rgba(255,255,255,.07);transform:translateX(100%);transition:transform .6s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;padding:28px 28px 32px}
+#mob-menu.open{transform:translateX(0)}
+.mob-close-btn{width:38px;height:38px;border-radius:9999px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:border-color .3s,color .3s;margin-left:auto}
+.mob-close-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.mob-logo img{height:20px;width:auto;opacity:.7}
+.mob-nav{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center}
+.mob-nav a{font-size:clamp(1.6rem,6vw,2.2rem);font-weight:300;letter-spacing:-.03em;color:rgba(255,255,255,.55);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;opacity:0;transform:translateX(24px);transition:color .3s}
+.mob-nav a:last-child{border-bottom:none}
+.mob-nav a:hover{color:var(--mint)}
+.mob-nav a .arr{font-size:.9rem;color:rgba(255,255,255,.2);transition:color .3s,transform .3s}
+.mob-nav a:hover .arr{color:var(--mint);transform:translate(3px,-3px)}
+.mob-nav a.mob-cta{color:var(--mint);font-family:var(--ff-serif);font-style:italic}
+.mob-bottom{display:flex;flex-direction:column;gap:18px}
+.mob-soc-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.mob-socials{display:flex;gap:10px}
+.mob-soc-btn{width:36px;height:36px;border-radius:9999px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);text-decoration:none;font-size:.85rem;transition:border-color .3s,color .3s}
+.mob-soc-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-foot{display:flex;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.25);padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
+.mob-foot a{color:rgba(255,255,255,.25);text-decoration:none;transition:color .3s}
+.mob-foot a:hover{color:var(--mint)}
+
+/* UTILS */
+.page{position:relative;z-index:2}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,247,246,.75);border:1px solid rgba(255,255,255,.08);border-radius:9999px;background:rgba(255,255,255,.02);backdrop-filter:blur(6px)}
+.chip-dot{width:6px;height:6px;border-radius:9999px;background:var(--mint);box-shadow:0 0 12px var(--mint);flex-shrink:0}
+.serif-italic{font-family:var(--ff-serif);font-style:italic;font-weight:400;color:var(--mint)}
+.text-stroke{-webkit-text-stroke:1px rgba(244,247,246,.35);color:transparent}
+.reveal-mask{display:inline-block;overflow:hidden;vertical-align:bottom}
+.reveal-mask>span{display:inline-block;transform:translateY(110%);will-change:transform}
+.btn-mint{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:9999px;background:var(--mint);color:#07181f;font-weight:500;font-size:.85rem;text-decoration:none;transition:background .35s,transform .3s;will-change:transform}
+.btn-mint:hover{background:#fff;transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.85rem;text-decoration:none;transition:border-color .3s,color .3s}
+.btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
+@keyframes pulse-ring{0%{transform:scale(.8);opacity:.8}80%,100%{transform:scale(2.2);opacity:0}}
+@keyframes float-soft{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shimmer-x{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+
+/* ════════════════════════════════
+   PAGE-SPECIFIC STYLES
+════════════════════════════════ */
+
+/* ── HERO ── */
+.hero{
+  min-height:90vh;
+  padding:16vh 5vw 6vh;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero-left{max-width:680px}
+
+.hero-inner{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-between;
+  gap:40px;
+  max-width:1600px;
+  margin:0 auto;
+  width:100%;
+}
+@media(max-width:1024px){.hero-inner{flex-direction:column;align-items:flex-start;gap:3vh}}
+.hero-eyebrow{margin-bottom:24px;opacity:0;transform:translateY(20px)}
+.hero-h1{
+  font-family:'Outfit',sans-serif;font-weight:300;
+  font-size:clamp(3.2rem,7.5vw,10vw);
+  line-height:.95;letter-spacing:-.04em;
+  max-width:680px;margin-bottom:28px;
+}
+.hero-h1 .serif-italic{
+  font-family:'Instrument Serif',serif;
+  font-style:italic;font-weight:400;
+  color:var(--mint);
+}
+.hero-desc{
+  max-width:420px;font-size:1.05rem;line-height:1.8;
+  color:var(--muted);font-weight:300;
+  margin-top:20px;
+  opacity:0;transform:translateY(20px);
+}
+
+/* ── STATS 2x2 GRID ── */
+.hero-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  opacity:0;
+  flex-shrink:0;
+  width:290px;
+}
+/* tiles */
+.hs-tile{position:relative;z-index:1}
+@media(max-width:1024px){
+  .hero-stats{width:100%;grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:640px){
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+}
+.hs-tile{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;
+  padding:18px 16px 16px;
+  display:flex;flex-direction:column;gap:0;
+  transition:border-color .35s,background .35s;
+  overflow:hidden;
+}
+.hs-tile:hover{border-color:rgba(77,212,168,.3);background:rgba(77,212,168,.03)}
+.hs-n{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(1.8rem,2.2vw,2.4rem);
+  font-weight:200;letter-spacing:-.04em;
+  color:var(--mint);line-height:1;margin-bottom:6px;
+}
+.hs-n sup{font-size:.42em;font-weight:400;color:rgba(77,212,168,.6)}
+.hs-l{
+  font-size:.72rem;line-height:1.4;
+  color:rgba(255,255,255,.4);font-weight:300;
+  margin-bottom:12px;
+}
+/* bar chart */
+.hs-bars{display:flex;align-items:flex-end;gap:3px;height:24px;margin-bottom:6px}
+.hs-bar{width:5px;border-radius:1px 1px 0 0;background:rgba(77,212,168,.22);transition:background .3s}
+.hs-bar.hi{background:rgba(77,212,168,.75)}
+.hs-tile:hover .hs-bar{background:rgba(77,212,168,.35)}
+.hs-tile:hover .hs-bar.hi{background:var(--mint)}
+/* progress bar */
+.hs-prog-labels{display:flex;justify-content:space-between;font-size:.58rem;color:rgba(255,255,255,.22);margin-bottom:4px}
+.hs-prog{height:2px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden;margin-bottom:6px}
+.hs-prog-fill{height:100%;border-radius:100px;background:rgba(77,212,168,.7)}
+/* sparkline squares */
+.hs-squares{display:flex;gap:3px;margin-bottom:6px}
+.hs-sq{width:14px;height:14px;border-radius:3px;background:rgba(77,212,168,.18);transition:background .3s}
+.hs-sq.hi{background:rgba(77,212,168,.65)}
+.hs-tile:hover .hs-sq{background:rgba(77,212,168,.3)}
+.hs-tile:hover .hs-sq.hi{background:var(--mint);opacity:.85}
+/* comparison bar */
+.hs-cmp{display:flex;gap:3px;margin-bottom:6px;align-items:center}
+.hs-cmp-fill{height:3px;border-radius:100px;background:rgba(77,212,168,.7)}
+.hs-cmp-rest{height:3px;border-radius:100px;background:rgba(255,255,255,.1);flex:1}
+/* trend tag */
+.hs-tag{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;color:rgba(77,212,168,.75);font-weight:500}
+.hs-tag i{font-size:.6rem}
+
+@keyframes pulse-line{0%,100%{opacity:.3;transform:scaleY(.4);transform-origin:top}50%{opacity:1;transform:scaleY(1);transform-origin:top}}
+
+/* ── APPROACH STRIP ── */
+.approach-strip{
+  padding:3vw 5vw;
+  border-top:1px solid var(--border);
+  display:flex;gap:5vw;align-items:center;
+  flex-wrap:wrap;position:relative;z-index:10;
+}
+.approach-text{
+  flex:1;min-width:280px;
+}
+.approach-text .eyebrow{font-size:.68rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.approach-text .eyebrow::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--mint);display:inline-block}
+.approach-text p{font-family:'Outfit',sans-serif;font-size:clamp(1.15rem,2vw,1.6rem);font-weight:300;line-height:1.7;color:rgba(255,255,255,.75);letter-spacing:-.02em;max-width:680px}
+.approach-text p em{font-family:var(--ff-serif);font-style:italic;color:var(--mint)}
+
+/* ── SERVICES LIST ── */
+.svcs-section{
+  padding:5vw 5vw;
+  position:relative;z-index:10;
+  border-top:1px solid var(--border);
+}
+.svcs-top{
+  display:flex;flex-direction:column;gap:12px;
+  margin-bottom:6vw;
+}
+@media(min-width:1024px){
+  .svcs-top{flex-direction:row;align-items:flex-end;justify-content:space-between}
+}
+.svcs-h2{
+  font-family:'Outfit',sans-serif;font-weight:300;
+  font-size:clamp(2.2rem,4.5vw,5rem);
+  line-height:1.0;letter-spacing:-.04em;
+  overflow:hidden;
+}
+.svcs-h2 .serif-italic{
+  font-family:'Instrument Serif',serif;
+  font-style:italic;font-weight:400;
+  color:var(--mint);
+}
+.svcs-h2 span{display:block;transform:translateY(110%);will-change:transform}
+.svcs-count{
+  font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.2);white-space:nowrap;
+  padding-bottom:8px;
+}
+
+/* Service cards grid */
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+@media(max-width:768px){.svc-grid{grid-template-columns:1fr}}
+
+.svc-card{
+  border-radius:20px;padding:28px 26px;
+  border:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(255,255,255,.028) 0%,rgba(255,255,255,.01) 100%);
+  position:relative;overflow:hidden;
+  transition:border-color .45s;
+  opacity:0;transform:translateY(40px);
+  display:flex;flex-direction:column;gap:16px;
+}
+.svc-card:hover{border-color:rgba(77,212,168,.35)}
+.svc-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 100%,rgba(77,212,168,.09) 0%,transparent 60%);
+  opacity:0;transition:opacity .45s;pointer-events:none;
+}
+.svc-card:hover::after{opacity:1}
+
+/* card top row */
+.sc-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+.sc-num{font-size:.65rem;font-weight:600;letter-spacing:.22em;color:rgba(77,212,168,.55)}
+.sc-badge{
+  width:36px;height:36px;border-radius:9999px;
+  background:rgba(77,212,168,.08);border:1px solid rgba(77,212,168,.18);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mint);font-size:.88rem;
+  transition:background .35s,transform .55s cubic-bezier(.34,1.56,.64,1);
+}
+.svc-card:hover .sc-badge{background:rgba(77,212,168,.18);transform:scale(1.12) rotate(10deg)}
+
+/* card title */
+.sc-title{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(1.1rem,1.4vw,1.6rem);font-weight:500;
+  letter-spacing:-.03em;
+  transition:color .35s;position:relative;z-index:1;
+  line-height:1.15;
+}
+.svc-card:hover .sc-title{color:var(--mint)}
+
+/* card description */
+.sc-desc{
+  font-size:.9rem;line-height:1.72;
+  color:rgba(255,255,255,.45);font-weight:300;
+  position:relative;z-index:1;flex:1;
+}
+
+/* pill tags */
+.sc-pills{display:flex;flex-wrap:wrap;gap:5px;position:relative;z-index:1;margin-top:auto}
+.sc-pill{
+  font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 10px;border-radius:9999px;
+  border:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.32);
+  transition:border-color .35s,color .35s;
+}
+.svc-card:hover .sc-pill{border-color:rgba(77,212,168,.25);color:rgba(77,212,168,.7)}
+
+/* stats CSS moved to hero-stats */
+
+/* ── PROCESS SECTION ── */
+/* ── PROCESS — horizontal timeline ── */
+.process-section{
+  padding:5vw 5vw;
+  border-top:1px solid var(--border);
+  position:relative;z-index:10;
+  text-align:left;
+}
+.process-header{
+  display:flex;flex-direction:column;gap:12px;
+  margin-bottom:2vw;
+}
+@media(min-width:1024px){
+  .process-header{flex-direction:row;align-items:flex-end;justify-content:space-between}
+}
+.process-h2{
+  font-family:'Outfit',sans-serif;font-weight:300;
+  font-size:clamp(2rem,4vw,4.5rem);
+  line-height:1.0;letter-spacing:-.04em;overflow:hidden;
+}
+.process-h2 .serif-italic{
+  font-family:'Instrument Serif',serif;
+  font-style:italic;font-weight:400;
+  color:var(--mint);
+}
+.process-h2 span{display:block;transform:translateY(110%)}
+.process-tagline{
+  font-size:.82rem;color:var(--muted);font-weight:300;
+  max-width:300px;line-height:1.65;padding-bottom:6px;
+}
+
+/* Timeline track */
+.process-track{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:24px;
+  padding:12px;
+}
+@media(min-width:900px){
+  .process-track{grid-template-columns:repeat(3,1fr);gap:12px}
+}
+
+.process-card{
+  position:relative;z-index:1;
+  padding:32px 28px 36px;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:16px;
+  background:rgba(255,255,255,.02);
+  display:flex;flex-direction:column;gap:16px;
+  opacity:0;transform:translateY(36px);
+  transition:border-color .4s,background .4s;
+  overflow:hidden;
+}
+/* mint glow from top on hover */
+.process-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:100px;
+  background:linear-gradient(to bottom,rgba(77,212,168,.06),transparent);
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+.process-card:hover{border-color:rgba(77,212,168,.3);background:rgba(77,212,168,.025)}
+.process-card:hover::after{opacity:1}
+
+/* step badge */
+
+/* pc-phase removed */
+
+/* icon */
+.pc-icon-wrap{
+  width:40px;height:40px;border-radius:11px;
+  background:rgba(77,212,168,.05);border:1px solid rgba(77,212,168,.12);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mint);font-size:1rem;
+  transition:background .35s,transform .5s cubic-bezier(.34,1.56,.64,1);
+}
+.process-card:hover .pc-icon-wrap{background:rgba(77,212,168,.12);transform:rotate(8deg)}
+
+.pc-title{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(1.1rem,1.4vw,1.55rem);font-weight:500;
+  letter-spacing:-.03em;
+  transition:color .35s;
+  position:relative;z-index:1;
+}
+.process-card:hover .pc-title{color:var(--mint)}
+.pc-desc{
+  font-size:.92rem;line-height:1.78;
+  color:var(--muted);font-weight:300;
+  position:relative;z-index:1;
+}
+/* deliverables list */
+.pc-list{
+  display:flex;flex-direction:column;gap:6px;
+  margin-top:4px;position:relative;z-index:1;
+}
+.pc-list-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:.83rem;color:rgba(255,255,255,.45);font-weight:300;
+}
+.pc-list-item::before{
+  content:'';width:4px;height:4px;border-radius:50%;
+  background:rgba(77,212,168,.4);flex-shrink:0;
+}
+
+/* ── FOOTER — exact match homepage ── */
+footer{
+  position:relative;z-index:10;
+  padding:60px 5vw 32px;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.ft-inner{max-width:1600px;margin:0 auto}
+.ft-cta{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ft-h2{
+  font-weight:300;line-height:.95;
+  letter-spacing:-.04em;
+  font-size:clamp(3rem,8vw,9rem);
+  margin-top:24px;margin-bottom:40px;
+}
+.ft-h2 .serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+.ft-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
+@media(min-width:640px){.ft-btns{flex-wrap:nowrap}}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:9999px;
+  border:1px solid rgba(255,255,255,.15);color:#fff;
+  font-size:.85rem;text-decoration:none;
+  transition:border-color .3s,color .3s;
+  will-change:transform;
+}
+.btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
+.ft-bar{
+  margin-top:64px;padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.05);
+  display:flex;flex-direction:column;gap:20px;
+  align-items:center;text-align:center;
+}
+@media(min-width:768px){.ft-bar{flex-direction:row;justify-content:space-between;text-align:left}}
+.ft-copy{font-size:.75rem;color:rgba(255,255,255,.4)}
+.ft-clock{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.5)}
+.ft-clock-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse-ring 2.4s ease-in-out infinite;position:relative}
+.ft-socials{display:flex;gap:10px}
+.ft-soc-btn{
+  width:38px;height:38px;border-radius:9999px;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;
+  transition:color .3s,border-color .3s;
+}
+.ft-soc-btn:hover{color:var(--mint);border-color:var(--mint)}
+.ft-brand{
+  margin-top:40px;text-align:center;overflow:hidden;
+  font-size:28vw;line-height:1;font-weight:300;
+  letter-spacing:-.05em;-webkit-text-stroke:1px rgba(244,247,246,.06);
+  color:transparent;user-select:none;
+}
+
+@media(max-width:768px){
+  .hero{padding:14vh 5vw 5vh}
+  .hero-count{align-items:flex-start}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .process-grid{grid-template-columns:1fr}
+  .ft-h2{font-size:clamp(2.2rem,9vw,5rem)}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="cursor-dot" id="cursor-dot"></div>
+<canvas id="particle-canvas"></canvas>
+<div class="ambient"></div>
+<div id="mob-overlay"></div>
+
+<!-- MOBILE MENU -->
+<div id="mob-menu">
+  <div class="mob-top">
+    <a href="index.html" class="mob-logo"><img src="logo.svg" alt="Krexlab"></a>
+    <button class="mob-close-btn" id="mob-close">✕</button>
+  </div>
+  <nav class="mob-nav">
+    <a href="work.html" class="mob-link" data-hover>Work <span class="arr">↗</span></a>
+    <a href="services.html" class="mob-link mob-cta" data-hover>Services <span class="arr">↗</span></a>
+    <a href="contact.html" class="mob-link" data-hover>Start a project <span class="arr">↗</span></a>
+  </nav>
+  <div class="mob-bottom">
+    <div class="mob-soc-label">Follow us</div>
+    <div class="mob-socials">
+      <a href="https://instagram.com/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://linkedin.com/company/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="https://behance.net/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-behance"></i></a>
+      <a href="https://wa.me/917907590856" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+    <div class="mob-foot">
+      <a href="mailto:hello@krexlab.in">hello@krexlab.in</a>
+      <span>© 2026 Krexlab</span>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <a href="index.html" class="nav-logo" data-hover><img src="logo.svg" alt="Krexlab"></a>
+  <div class="nav-links">
+    <a href="index.html#work" data-hover>Work</a>
+    <a href="services.html" class="active" data-hover>Services</a>
+    <a href="contact.html" class="nav-cta" data-hover>Start a project</a>
+  </div>
+  <button class="nav-mob-btn" id="mob-btn" aria-label="Menu">
+    <span class="mob-line"></span><span class="mob-line"></span>
+  </button>
+</header>
+
+<div class="page">
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <!-- LEFT -->
+    <div>
+      <div class="hero-eyebrow">
+        <span class="chip"><span class="chip-dot"></span>What we do · 06 Services</span>
+      </div>
+      <h1 class="hero-h1">
+        <span class="reveal-mask" style="display:block"><span>Design.</span></span>
+        <span class="reveal-mask" style="display:block"><span>Engineer.</span></span>
+        <span class="reveal-mask" style="display:block"><span><em class="serif-italic">Strategy.</em></span></span>
+      </h1>
+      <p class="hero-desc">Bold visual systems, seamless digital experiences, and brand strategies built for businesses that refuse to blend in.</p>
+    </div>
+    <!-- STATS 2x2 GRID -->
+    <div class="hero-stats" id="hero-stats">
+
+      <!-- 50+ bar chart -->
+      <div class="hs-tile">
+        <div class="hs-n" data-count="50">0<sup>+</sup></div>
+        <div class="hs-l">Projects delivered globally</div>
+        <div class="hs-bars">
+          <div class="hs-bar" style="height:35%"></div>
+          <div class="hs-bar" style="height:50%"></div>
+          <div class="hs-bar" style="height:42%"></div>
+          <div class="hs-bar" style="height:65%"></div>
+          <div class="hs-bar" style="height:55%"></div>
+          <div class="hs-bar hi" style="height:80%"></div>
+          <div class="hs-bar hi" style="height:100%"></div>
+        </div>
+        <div class="hs-tag"><i class="fa-solid fa-arrow-trend-up"></i> Growing every quarter</div>
+      </div>
+
+      <!-- 4x progress -->
+      <div class="hs-tile">
+        <div class="hs-n">4<sup>x</sup></div>
+        <div class="hs-l">Average ROI improvement</div>
+        <div class="hs-prog-labels"><span>Baseline</span><span>4x growth</span></div>
+        <div class="hs-prog"><div class="hs-prog-fill" style="width:78%"></div></div>
+        <div class="hs-tag"><i class="fa-solid fa-arrow-trend-up"></i> vs. industry avg</div>
+      </div>
+
+      <!-- 100% squares -->
+      <div class="hs-tile">
+        <div class="hs-n">100<sup>%</sup></div>
+        <div class="hs-l">Custom — no templates, ever</div>
+        <div class="hs-squares">
+          <div class="hs-sq hi"></div><div class="hs-sq hi"></div><div class="hs-sq hi"></div>
+          <div class="hs-sq hi"></div><div class="hs-sq hi"></div><div class="hs-sq hi"></div>
+          <div class="hs-sq hi"></div><div class="hs-sq hi"></div>
+        </div>
+        <div class="hs-tag"><i class="fa-solid fa-star"></i> 5★ average rating</div>
+      </div>
+
+      <!-- 48h comparison -->
+      <div class="hs-tile">
+        <div class="hs-n">48<sup>h</sup></div>
+        <div class="hs-l">First-draft turnaround time</div>
+        <div class="hs-cmp">
+          <div class="hs-cmp-fill" style="width:72px"></div>
+          <div class="hs-cmp-rest"></div>
+        </div>
+        <div class="hs-tag"><i class="fa-regular fa-clock"></i> vs. industry 7–14 days</div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+</section>
+
+<!-- ═══ APPROACH STRIP ═══ -->
+<div class="approach-strip">
+  <div class="approach-text">
+    <div class="eyebrow">Our approach</div>
+    <p>We don't just make things look good. We craft experiences that <em>convert,</em> resonate, and <em>outlast trends.</em></p>
+  </div>
+</div>
+
+<!-- ═══ SERVICES GRID ═══ -->
+<section class="svcs-section">
+  <div class="svcs-top">
+    <h2 class="svcs-h2">
+      <span>Our <em class="serif-italic">Capabilities.</em></span>
+    </h2>
+    <span class="svcs-count">06 Services</span>
+  </div>
+
+  <div class="svc-grid">
+
+    <div class="svc-card" data-hover>
+      <div class="sc-top">
+        <span class="sc-num">01</span>
+        <div class="sc-badge"><i class="fa-solid fa-fingerprint"></i></div>
+      </div>
+      <div class="sc-title">Brand Identity</div>
+      <div class="sc-desc">We craft bold visual strategies, premium logos, high-contrast typography systems, and detailed brand guidelines that position your brand far ahead of the curve.</div>
+      <div class="sc-pills">
+        <span class="sc-pill">Logo Design</span>
+        <span class="sc-pill">Brand Guidelines</span>
+        <span class="sc-pill">Typography</span>
+        <span class="sc-pill">Color Systems</span>
+      </div>
+    </div>
+
+    <div class="svc-card" data-hover>
+      <div class="sc-top">
+        <span class="sc-num">02</span>
+        <div class="sc-badge"><i class="fa-solid fa-display"></i></div>
+      </div>
+      <div class="sc-title">Web &amp; UI/UX Design</div>
+      <div class="sc-desc">Designing butter-smooth digital experiences. We bridge aesthetic minimalism with high-end frontend layout structures tailored to scale your digital presence on every device.</div>
+      <div class="sc-pills">
+        <span class="sc-pill">Web Design</span>
+        <span class="sc-pill">UI/UX</span>
+        <span class="sc-pill">Webflow</span>
+        <span class="sc-pill">Shopify</span>
+      </div>
+    </div>
+
+    <div class="svc-card" data-hover>
+      <div class="sc-top">
+        <span class="sc-num">03</span>
+        <div class="sc-badge"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      </div>
+      <div class="sc-title">AI Video Ads</div>
+      <div class="sc-desc">Next-generation generative commercial advertising campaigns. Merging data-driven AI systems with cinematic execution to maximise engagement and conversion metrics.</div>
+      <div class="sc-pills">
+        <span class="sc-pill">AI Production</span>
+        <span class="sc-pill">Social Ads</span>
+        <span class="sc-pill">Cinematic</span>
+      </div>
+    </div>
+
+    <div class="svc-card" data-hover>
+      <div class="sc-top">
+        <span class="sc-num">04</span>
+        <div class="sc-badge"><i class="fa-solid fa-film"></i></div>
+      </div>
+      <div class="sc-title">Motion Graphics</div>
+      <div class="sc-desc">Dynamic kinetic layouts, logo animations, high-end promotional loops, and smooth transition assets that inject immersive motion value into your creative projects.</div>
+      <div class="sc-pills">
+        <span class="sc-pill">Animation</span>
+        <span class="sc-pill">Logo Motion</span>
+        <span class="sc-pill">After Effects</span>
+      </div>
+    </div>
+
+    <div class="svc-card" data-hover>
+      <div class="sc-top">
+        <span class="sc-num">05</span>
+        <div class="sc-badge"><i class="fa-solid fa-hashtag"></i></div>
+      </div>
+      <div class="sc-title">Social Media Design</div>
+      <div class="sc-desc">Scroll-stopping creatives for Instagram, LinkedIn, and beyond. Consistent visual systems, post templates, stories, reels covers, and campaign assets that keep your brand sharp everywhere.</div>
+      <div class="sc-pills">
+        <span class="sc-pill">Instagram</span>
+        <span class="sc-pill">LinkedIn</span>
+        <span class="sc-pill">Post Templates</span>
+        <span class="sc-pill">Campaign Creatives</span>
+      </div>
+    </div>
+
+    <div class="svc-card" data-hover>
+      <div class="sc-top">
+        <span class="sc-num">06</span>
+        <div class="sc-badge"><i class="fa-solid fa-chart-line"></i></div>
+      </div>
+      <div class="sc-title">Digital Marketing</div>
+      <div class="sc-desc">Strategy-led social media management, paid ad campaigns, and performance creatives designed to grow your audience and drive measurable business results across digital channels.</div>
+      <div class="sc-pills">
+        <span class="sc-pill">Social Media Mgmt</span>
+        <span class="sc-pill">Paid Ads</span>
+        <span class="sc-pill">Content Strategy</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- stats moved to hero -->
+
+<!-- ═══ PROCESS ═══ -->
+<section class="process-section">
+  <div class="process-header">
+    <div>
+      <span class="chip" style="margin-bottom:10px;display:inline-flex"><span class="chip-dot"></span>How we work</span>
+      <h2 class="process-h2">
+        <span class="reveal-mask" style="display:block"><span>A process built for</span></span>
+        <span class="reveal-mask" style="display:block"><span><em class="serif-italic">results.</em></span></span>
+      </h2>
+    </div>
+    <p class="process-tagline">Three phases. Zero guesswork. Every project starts with clarity and ends with impact.</p>
+  </div>
+
+  <div class="process-track">
+
+    <div class="process-card" data-hover>
+      <div class="pc-step">
+
+
+      </div>
+      <div class="pc-icon-wrap"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <div class="pc-title">Discover &amp; Define</div>
+      <div class="pc-desc">Deep dive into your brand, audience, and market. We ask the uncomfortable questions and map every insight before a single pixel.</div>
+      <div class="pc-list">
+        <div class="pc-list-item">Brand audit &amp; competitor analysis</div>
+        <div class="pc-list-item">Audience mapping &amp; positioning</div>
+        <div class="pc-list-item">Strategy brief &amp; creative direction</div>
+      </div>
+    </div>
+
+    <div class="process-card" data-hover>
+      <div class="pc-step">
+
+
+      </div>
+      <div class="pc-icon-wrap"><i class="fa-solid fa-pen-nib"></i></div>
+      <div class="pc-title">Design &amp; Craft</div>
+      <div class="pc-desc">From wireframes to full-fidelity execution. Iterative and transparent — you see work in progress, not just the final reveal.</div>
+      <div class="pc-list">
+        <div class="pc-list-item">Wireframes &amp; prototypes</div>
+        <div class="pc-list-item">Iterative design reviews</div>
+        <div class="pc-list-item">High-fidelity production</div>
+      </div>
+    </div>
+
+    <div class="process-card" data-hover>
+      <div class="pc-step">
+
+
+      </div>
+      <div class="pc-icon-wrap"><i class="fa-solid fa-rocket"></i></div>
+      <div class="pc-title">Deliver &amp; Scale</div>
+      <div class="pc-desc">Launch-ready assets, handoff documentation, and ongoing support. We build systems that scale with you, not stall when you grow.</div>
+      <div class="pc-list">
+        <div class="pc-list-item">Production-ready assets</div>
+        <div class="pc-list-item">Full handoff documentation</div>
+        <div class="pc-list-item">Ongoing support &amp; iterations</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER — exact match homepage ═══ -->
+<footer id="contact">
+  <div class="ft-inner">
+    <div class="ft-cta">
+      <span class="chip"><span class="chip-dot"></span>Let's build something</span>
+      <h2 class="ft-h2">
+        <span class="reveal-mask" style="display:block"><span>Have an idea?</span></span>
+        <span class="reveal-mask" style="display:block">
+          <span><em class="serif-italic">Let's make</em> it</span>
+        </span>
+        <span class="reveal-mask" style="display:block">
+          <span class="text-stroke">unforgettable.</span>
+        </span>
+      </h2>
+      <div class="ft-btns">
+        <a href="tel:+917907590856" class="btn-mint" data-hover>
+          <i class="fa-solid fa-phone" style="font-size:.75rem"></i> Call Now
+        </a>
+        <a href="https://wa.me/917907590856?text=Hi%20Krexlab,%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" class="btn-ghost" data-hover>
+          <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+        <a href="mailto:hello@krexlab.in" class="btn-ghost" data-hover>
+          <i class="fa-regular fa-envelope" style="font-size:.8rem"></i> hello@krexlab.in
+        </a>
+      </div>
+    </div>
+
+    <div class="ft-bar">
+      <div>
+        <div class="ft-copy">© 2026 Krexlab Studio</div>
+        <div class="ft-copy" style="margin-top:4px;opacity:.6">Crafted with care · Est. 2025</div>
+      </div>
+      <div class="ft-clock">
+        <span class="ft-clock-dot"></span>
+        Studio time · <span id="ft-clock">—</span> IST
+      </div>
+      <div class="ft-socials">
+        <a href="https://instagram.com/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://linkedin.com/company/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://behance.net/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-behance"></i></a>
+      </div>
+    </div>
+
+    <div class="ft-brand">krexlab</div>
+  </div>
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* CURSOR */
+const curDot=document.getElementById('cursor-dot'),curRing=document.getElementById('cursor-ring');
+let mx=innerWidth/2,my=innerHeight/2,dx=mx,dy=my,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+gsap.ticker.add(()=>{
+  dx+=(mx-dx)*.55;dy+=(my-dy)*.55;rx+=(mx-rx)*.18;ry+=(my-ry)*.18;
+  gsap.set(curDot,{x:dx,y:dy});gsap.set(curRing,{x:rx,y:ry});
+});
+const onE=()=>curRing.classList.add('is-hover'),onL=()=>curRing.classList.remove('is-hover');
+document.querySelectorAll('a,button,[data-hover]').forEach(el=>{el.addEventListener('mouseenter',onE);el.addEventListener('mouseleave',onL)});
+
+/* PARTICLES */
+const canvas=document.getElementById('particle-canvas'),ctx=canvas.getContext('2d');
+let pts=[],frame=0;
+const mouse={x:-9999,y:-9999,r:160};
+function resize(){
+  const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;
+  canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const N=w<768?24:50,MAX=w<768?100:130;
+  pts=Array.from({length:N},()=>{const x=Math.random()*w,y=Math.random()*h;return{x,y,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.2+.5,dx:0,dy:0,MAX}});
+}
+resize();window.addEventListener('resize',resize);
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+function drawPts(){
+  requestAnimationFrame(drawPts);frame++;
+  if(innerWidth<768&&frame%2===0)return;
+  const w=innerWidth,h=innerHeight;ctx.clearRect(0,0,w,h);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+    const d=Math.hypot(mouse.x-p.x,mouse.y-p.y);
+    p.dx=p.x;p.dy=p.y;
+    if(d<mouse.r&&d>0){const f=(mouse.r-d)/mouse.r;p.dx-=(mouse.x-p.x)/d*f*30;p.dy-=(mouse.y-p.y)/d*f*30}
+    ctx.beginPath();ctx.arc(p.dx,p.dy,p.r,0,Math.PI*2);ctx.fillStyle='rgba(77,212,168,.55)';ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i].dx-pts[j].dx,pts[i].dy-pts[j].dy);
+    if(d<pts[i].MAX){ctx.beginPath();ctx.moveTo(pts[i].dx,pts[i].dy);ctx.lineTo(pts[j].dx,pts[j].dy);ctx.strokeStyle=`rgba(77,212,168,${(1-d/pts[i].MAX)*.14})`;ctx.lineWidth=.5;ctx.stroke()}
+  }
+}
+drawPts();
+
+/* HEADER */
+const hdr=document.getElementById('main-header');let lastY=0;
+window.addEventListener('scroll',()=>{
+  const s=scrollY;hdr.classList.toggle('scrolled',s>30);
+  if(s>100&&s>lastY+2)hdr.classList.add('hide');else if(s<lastY-2)hdr.classList.remove('hide');
+  lastY=s;
+});
+
+/* MOBILE MENU */
+const mobMenu=document.getElementById('mob-menu'),mobOverlay=document.getElementById('mob-overlay');
+function openMenu(){
+  mobMenu.classList.add('open');mobOverlay.classList.add('show');
+  gsap.fromTo('.mob-link',{x:24,opacity:0},{x:0,opacity:1,stagger:.08,duration:.65,ease:'power3.out',delay:.15});
+}
+function closeMenu(){mobMenu.classList.remove('open');mobOverlay.classList.remove('show')}
+document.getElementById('mob-btn').addEventListener('click',openMenu);
+document.getElementById('mob-close').addEventListener('click',closeMenu);
+mobOverlay.addEventListener('click',closeMenu);
+mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+
+/* ANIMATIONS */
+window.addEventListener('load',()=>{
+  ScrollTrigger.refresh();
+
+  /* Hero */
+  const tl=gsap.timeline({defaults:{ease:'power4.out'}});
+  tl.to('.hero-eyebrow',{y:0,opacity:1,duration:.9,delay:.2})
+    .to('.hero-h1 .reveal-mask>span',{y:'0%',duration:1.2,stagger:.1},'-=.5')
+    .to('.hero-subline',{y:0,opacity:1,duration:.9},'-=.4');
+
+  /* Hero stats strip */
+  gsap.to('.hero-desc', {opacity:1, y:0, duration:.9, delay:.65, ease:'power3.out'});
+  gsap.to('#hero-stats', {opacity:1, duration:.9, delay:.85, ease:'power3.out'});
+  gsap.fromTo('.hs-tile',
+    {opacity:0, y:20},
+    {opacity:1, y:0, stagger:.1, duration:.7, ease:'power3.out', delay:.95}
+  );
+  /* Stats count-up */
+  document.querySelectorAll('#hero-stats [data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const sup = el.querySelector('sup').outerHTML;
+    const obj = {val:0};
+    setTimeout(() => {
+      gsap.to(obj, {val:target, duration:1.6, ease:'power3.out',
+        onUpdate: () => { el.innerHTML = Math.round(obj.val) + sup; }
+      });
+    }, 1200);
+  });
+
+
+
+  /* Hero parallax */
+  gsap.to('.hero-h1',{yPercent:-14,ease:'none',
+    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+  /* Approach */
+  gsap.fromTo('.approach-text',{y:40,opacity:0},{y:0,opacity:1,duration:1,ease:'power3.out',
+    scrollTrigger:{trigger:'.approach-strip',start:'top 82%'}});
+
+  /* Services heading */
+  gsap.to('.svcs-h2 span',{y:'0%',duration:1.2,ease:'power4.out',
+    scrollTrigger:{trigger:'.svcs-section',start:'top 75%'}});
+
+  /* Service cards staggered */
+  gsap.utils.toArray('.svc-card').forEach((c,i)=>{
+    gsap.to(c,{y:0,opacity:1,duration:.9,ease:'power3.out',delay:(i%2)*.1,
+      scrollTrigger:{trigger:c,start:'top 88%'}});
+  });
+
+/* stats moved to hero */
+
+  /* Process heading */
+  gsap.to('.process-h2 .reveal-mask>span',{y:'0%',duration:1.2,ease:'power4.out',
+    scrollTrigger:{trigger:'.process-section',start:'top 75%'}});
+
+  /* Process cards */
+  gsap.utils.toArray('.process-card').forEach((c,i)=>{
+    gsap.to(c,{y:0,opacity:1,duration:.9,ease:'power3.out',delay:i*.12,
+      scrollTrigger:{trigger:c,start:'top 88%'}});
+  });
+
+  /* Footer */
+  gsap.fromTo('.ft-h2 .reveal-mask>span',{y:'110%'},{y:'0%',duration:1.2,stagger:.08,ease:'power4.out',
+    scrollTrigger:{trigger:'footer',start:'top 80%'}});
+  gsap.fromTo('.ft-btns',{y:24,opacity:0},{y:0,opacity:1,duration:.9,delay:.1,ease:'power3.out',
+    scrollTrigger:{trigger:'.ft-btns',start:'top 88%'}});
+});
+
+/* MAGNETIC */
+document.querySelectorAll('.btn-mint,.btn-ghost').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.28,y:(e.clientY-r.top-r.height/2)*.28,duration:.3,ease:'power2.out'})});
+  btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+});
+
+/* CLOCK */
+function tick(){const el=document.getElementById('ft-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
+setInterval(tick,1000);tick();
+</script>
+<script>
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on("init", user => {
+    if (!user) {
+      window.netlifyIdentity.on("login", () => {
+        document.location.href = "/admin/";
+      });
+    }
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Krexlab Studio</title>
+<meta name="description" content="Selected branding, UI/UX, AI video and design projects by Krexlab Studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --mint:#4dd4a8;--mint-soft:#3cb28d;
+  --bg:#07181f;--bg-soft:#0c2530;
+  --ink:#f4f7f6;--muted:#8ba2ab;
+  --border:rgba(255,255,255,.06);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:96px 96px;
+}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+::-webkit-scrollbar{width:0;background:transparent}
+
+/* CURSOR */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--mint);border-radius:9999px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(77,212,168,.55);border-radius:9999px;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.2,.8,.2,1),height .3s,border-color .3s,background .3s}
+.cursor-ring.is-hover{width:72px;height:72px;background:rgba(77,212,168,.08);border-color:rgba(77,212,168,.8)}
+@media(max-width:768px){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+
+/* CANVAS + AMBIENT */
+#particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:.5}
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 65% 55% at 10% 50%,rgba(77,212,168,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 45% 40% at 88% 18%,rgba(77,212,168,.05) 0%,transparent 55%)}
+
+/* HEADER */
+header{position:fixed;top:0;inset-inline:0;z-index:50;padding:20px 5vw;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,border-color .5s,transform .55s;border-bottom:1px solid transparent}
+header.scrolled{padding:12px 5vw;background:rgba(7,24,31,.7);backdrop-filter:blur(20px);border-color:rgba(255,255,255,.05)}
+header.hide{transform:translateY(-100%)}
+.nav-logo img{height:24px;width:auto;display:block}
+.nav-links{display:flex;align-items:center;gap:2vw}
+.nav-links a{font-size:.82rem;font-weight:400;color:rgba(255,255,255,.7);text-decoration:none;transition:color .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--mint)}
+.nav-cta{padding:9px 20px;border-radius:9999px;background:var(--mint);color:#07181f!important;font-weight:500!important;transition:background .3s!important}
+.nav-cta:hover{background:#fff!important}
+.nav-mob-btn{display:none;width:40px;height:40px;border-radius:9999px;background:var(--mint);color:#07181f;align-items:center;justify-content:center;border:none;cursor:pointer;flex-direction:column;gap:3px}
+.mob-line{display:block;width:16px;height:2px;background:#07181f}
+@media(max-width:768px){.nav-links{display:none}.nav-mob-btn{display:flex}}
+
+/* MOBILE MENU */
+#mob-overlay{position:fixed;inset:0;z-index:59;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .5s}
+#mob-overlay.show{opacity:1;pointer-events:all}
+#mob-menu{position:fixed;top:0;right:0;bottom:0;width:min(320px,85vw);z-index:60;background:#0a1e28;border-left:1px solid rgba(255,255,255,.07);transform:translateX(100%);transition:transform .6s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;padding:28px 28px 32px}
+#mob-menu.open{transform:translateX(0)}
+.mob-close-btn{width:38px;height:38px;border-radius:9999px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:border-color .3s,color .3s;margin-left:auto}
+.mob-close-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.mob-logo img{height:20px;width:auto;opacity:.7}
+.mob-nav{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center}
+.mob-nav a{font-size:clamp(1.6rem,6vw,2.2rem);font-weight:300;letter-spacing:-.03em;color:rgba(255,255,255,.55);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;opacity:0;transform:translateX(24px);transition:color .3s}
+.mob-nav a:last-child{border-bottom:none}
+.mob-nav a:hover{color:var(--mint)}
+.mob-nav a .arr{font-size:.9rem;color:rgba(255,255,255,.2);transition:color .3s,transform .3s}
+.mob-nav a:hover .arr{color:var(--mint);transform:translate(3px,-3px)}
+.mob-nav a.mob-cta{color:var(--mint);font-family:'Instrument Serif',serif;font-style:italic}
+.mob-bottom{display:flex;flex-direction:column;gap:18px}
+.mob-soc-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.mob-socials{display:flex;gap:10px}
+.mob-soc-btn{width:36px;height:36px;border-radius:9999px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);text-decoration:none;font-size:.85rem;transition:border-color .3s,color .3s}
+.mob-soc-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-foot{display:flex;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.25);padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
+.mob-foot a{color:rgba(255,255,255,.25);text-decoration:none;transition:color .3s}
+.mob-foot a:hover{color:var(--mint)}
+
+/* UTILS */
+.page{position:relative;z-index:2}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,247,246,.75);border:1px solid rgba(255,255,255,.08);border-radius:9999px;background:rgba(255,255,255,.02);backdrop-filter:blur(6px)}
+.chip-dot{width:6px;height:6px;border-radius:9999px;background:var(--mint);box-shadow:0 0 12px var(--mint);flex-shrink:0}
+.serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+.text-stroke{-webkit-text-stroke:1px rgba(244,247,246,.35);color:transparent}
+.reveal-mask{display:inline-block;overflow:hidden;vertical-align:bottom}
+.reveal-mask>span{display:inline-block;transform:translateY(110%);will-change:transform}
+.btn-mint{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:9999px;background:var(--mint);color:#07181f;font-weight:500;font-size:.85rem;text-decoration:none;transition:background .35s,transform .3s;will-change:transform}
+.btn-mint:hover{background:#fff;transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.85rem;text-decoration:none;transition:border-color .3s,color .3s}
+.btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
+@keyframes pulse-ring{0%{transform:scale(.8);opacity:.8}80%,100%{transform:scale(2.2);opacity:0}}
+
+/* ════ HERO ════ */
+.hero{
+  min-height:55vh;
+  padding:20vh 5vw 6vh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  position:relative;z-index:10;
+}
+.hero-eyebrow{margin-bottom:20px;opacity:0;transform:translateY(16px)}
+.hero-h1{
+  font-family:'Outfit',sans-serif;font-weight:300;
+  font-size:clamp(3rem,7vw,9rem);
+  line-height:.95;letter-spacing:-.04em;
+  max-width:900px;
+}
+.hero-desc{
+  font-size:.95rem;line-height:1.75;color:var(--muted);
+  font-weight:300;max-width:520px;margin-top:24px;
+  opacity:0;transform:translateY(16px);
+}
+
+
+
+/* ════ WORK GRID ════ */
+.work-section{
+  padding:4vw 5vw 8vw;
+  position:relative;z-index:10;
+}
+.work-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:32px;
+}
+@media(max-width:768px){.work-grid{grid-template-columns:1fr;gap:24px}}
+
+.wc{
+  text-decoration:none;color:var(--ink);
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(40px);
+  will-change:opacity,transform;
+}
+/* stagger even cards down */
+@media(min-width:768px){
+  .wc:nth-child(even){margin-top:56px}
+}
+
+/* card visual */
+.wc-vis{
+  aspect-ratio:4/3;
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid rgba(255,255,255,.06);
+  background:var(--bg-soft);
+  margin-bottom:20px;
+  transition:border-color .45s;
+}
+.wc:hover .wc-vis{border-color:rgba(77,212,168,.3)}
+
+/* color tint per project */
+.wc-vis.tint-teal{background:linear-gradient(135deg,rgba(77,212,168,.18) 0%,rgba(7,24,31,1) 70%)}
+.wc-vis.tint-blue{background:linear-gradient(135deg,rgba(56,189,248,.18) 0%,rgba(7,24,31,1) 70%)}
+.wc-vis.tint-amber{background:linear-gradient(135deg,rgba(251,191,36,.18) 0%,rgba(7,24,31,1) 70%)}
+.wc-vis.tint-purple{background:linear-gradient(135deg,rgba(192,132,252,.18) 0%,rgba(7,24,31,1) 70%)}
+.wc-vis.tint-coral{background:linear-gradient(135deg,rgba(251,113,133,.18) 0%,rgba(7,24,31,1) 70%)}
+.wc-vis.tint-green{background:linear-gradient(135deg,rgba(74,222,128,.18) 0%,rgba(7,24,31,1) 70%)}
+
+/* motion graphic in card */
+.wc-mg{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.28;transition:opacity .45s;
+}
+.wc:hover .wc-mg{opacity:1}
+
+/* arrow */
+.wc-arrow{
+  position:absolute;bottom:18px;right:18px;
+  width:40px;height:40px;border-radius:9999px;
+  border:1px solid rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;
+  transition:all .45s cubic-bezier(.2,.8,.2,1);
+}
+.wc:hover .wc-arrow{background:var(--mint);border-color:var(--mint);color:#07181f;transform:rotate(45deg)}
+
+/* year badge */
+.wc-year{
+  position:absolute;top:16px;left:18px;
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.3);
+}
+
+/* card info */
+.wc-tag{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mint);font-weight:500;margin-bottom:8px}
+.wc-title{
+  font-size:clamp(1.2rem,1.6vw,1.85rem);font-weight:300;
+  letter-spacing:-.03em;line-height:1.15;
+  transition:color .35s;margin-bottom:10px;
+}
+.wc:hover .wc-title{color:var(--mint)}
+.wc-desc{font-size:.83rem;line-height:1.65;color:var(--muted);font-weight:300}
+
+/* motion visuals */
+.mg-pulse{width:160px;height:160px;background:radial-gradient(circle,var(--mint) 0%,transparent 70%);border-radius:50%;filter:blur(30px);opacity:.6}
+.wc:hover .mg-pulse{animation:kPulse 3s infinite alternate ease-in-out}
+@keyframes kPulse{0%{transform:scale(.7);opacity:.3}100%{transform:scale(2);opacity:.9}}
+
+.mg-lines{width:140%;display:flex;flex-direction:column;gap:36px;transform:rotate(-12deg)}
+.mg-line{height:1px;background:linear-gradient(90deg,transparent,rgba(77,212,168,.6),transparent);opacity:.6}
+.wc:hover .mg-line{animation:kSlide 3s infinite linear}
+.wc:hover .mg-line:nth-child(2){animation-direction:reverse;animation-duration:4s}
+.wc:hover .mg-line:nth-child(3){animation-duration:2.5s;animation-delay:.8s}
+@keyframes kSlide{0%{transform:translateX(-50%)}100%{transform:translateX(50%)}}
+
+.mg-radar{width:110%;height:110%;border-radius:50%;background:conic-gradient(from 0deg,transparent 60%,rgba(77,212,168,.5) 100%)}
+.wc:hover .mg-radar{animation:kSpin 4s infinite linear}
+@keyframes kSpin{100%{transform:rotate(360deg)}}
+.mg-r1{position:absolute;width:130px;height:130px;border-radius:50%;border:1px solid rgba(77,212,168,.4)}
+.mg-r2{position:absolute;width:90px;height:90px;border-radius:50%;border:1px solid rgba(77,212,168,.3)}
+
+.mg-rings-w{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.mg-rr{position:absolute;border-radius:50%;border:1px solid rgba(77,212,168,.45)}
+.mg-rr1{width:100px;height:100px}
+.mg-rr2{width:190px;height:190px;opacity:.4}
+.mg-rr3{width:290px;height:290px;opacity:.18}
+.wc:hover .mg-rr{animation:kRipple 3.5s ease-out infinite}
+.wc:hover .mg-rr2{animation-delay:1.2s}
+.wc:hover .mg-rr3{animation-delay:2.4s}
+@keyframes kRipple{0%{width:0;height:0;opacity:1}100%{width:400px;height:400px;opacity:0}}
+
+.mg-dots{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:20px}
+.mg-dot-item{width:8px;height:8px;border-radius:50%;background:rgba(77,212,168,.35)}
+.mg-dot-item.hi{background:rgba(77,212,168,.7)}
+
+.mg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:24px}
+.mg-block{border-radius:6px;background:rgba(77,212,168,.15);aspect-ratio:1}
+.mg-block.hi{background:rgba(77,212,168,.45)}
+
+/* ════ FOOTER ════ */
+footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid rgba(255,255,255,.05)}
+.ft-inner{max-width:1600px;margin:0 auto}
+.ft-cta{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ft-h2{font-weight:300;line-height:.95;letter-spacing:-.04em;font-size:clamp(3rem,8vw,9rem);margin-top:24px;margin-bottom:40px}
+.ft-h2 .serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+.ft-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
+@media(min-width:640px){.ft-btns{flex-wrap:nowrap}}
+.ft-bar{margin-top:64px;padding-top:24px;border-top:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;gap:20px;align-items:center;text-align:center}
+@media(min-width:768px){.ft-bar{flex-direction:row;justify-content:space-between;text-align:left}}
+.ft-copy{font-size:.75rem;color:rgba(255,255,255,.4)}
+.ft-clock{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.5)}
+.ft-clock-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse-ring 2.4s ease-in-out infinite;position:relative}
+.ft-socials{display:flex;gap:10px}
+.ft-soc-btn{width:38px;height:38px;border-radius:9999px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;transition:color .3s,border-color .3s}
+.ft-soc-btn:hover{color:var(--mint);border-color:var(--mint)}
+.ft-brand{margin-top:40px;text-align:center;overflow:hidden;font-size:28vw;line-height:1;font-weight:300;letter-spacing:-.05em;-webkit-text-stroke:1px rgba(244,247,246,.06);color:transparent;user-select:none}
+
+@media(max-width:768px){
+  .hero{padding:16vh 5vw 5vh}
+  .ft-h2{font-size:clamp(2.2rem,9vw,5rem)}
+  .ft-bar{flex-direction:column;align-items:center;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="cursor-dot" id="cursor-dot"></div>
+<canvas id="particle-canvas"></canvas>
+<div class="ambient"></div>
+<div id="mob-overlay"></div>
+
+<div id="mob-menu">
+  <div class="mob-top">
+    <a href="index.html" class="mob-logo"><img src="logo.svg" alt="Krexlab"></a>
+    <button class="mob-close-btn" id="mob-close">✕</button>
+  </div>
+  <nav class="mob-nav">
+    <a href="work.html" class="mob-link mob-cta" data-hover>Work <span class="arr">↗</span></a>
+    <a href="services.html" class="mob-link" data-hover>Services <span class="arr">↗</span></a>
+    <a href="contact.html" class="mob-link" data-hover>Start a project <span class="arr">↗</span></a>
+  </nav>
+  <div class="mob-bottom">
+    <div class="mob-soc-label">Follow us</div>
+    <div class="mob-socials">
+      <a href="https://instagram.com/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://linkedin.com/company/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="https://behance.net/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-behance"></i></a>
+      <a href="https://wa.me/917907590856" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+    <div class="mob-foot">
+      <a href="mailto:hello@krexlab.in">hello@krexlab.in</a>
+      <span>© 2026 Krexlab</span>
+    </div>
+  </div>
+</div>
+
+<header id="main-header">
+  <a href="index.html" class="nav-logo" data-hover><img src="logo.svg" alt="Krexlab"></a>
+  <div class="nav-links">
+    <a href="work.html" class="active" data-hover>Work</a>
+    <a href="services.html" data-hover>Services</a>
+    <a href="contact.html" class="nav-cta" data-hover>Start a project</a>
+  </div>
+  <button class="nav-mob-btn" id="mob-btn" aria-label="Menu">
+    <span class="mob-line"></span><span class="mob-line"></span>
+  </button>
+</header>
+
+<div class="page">
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div style="max-width:1600px;margin:0 auto;width:100%">
+    <div class="hero-eyebrow">
+      <span class="chip"><span class="chip-dot"></span>Our Work · 06 Projects</span>
+    </div>
+    <h1 class="hero-h1">
+      <span class="reveal-mask" style="display:block"><span>Brands built to</span></span>
+      <span class="reveal-mask" style="display:block">
+        <span>be <em class="serif-italic">remembered.</em></span>
+      </span>
+    </h1>
+    <p class="hero-desc">A curated showcase of brand identities, social media systems, AI-powered content and digital experiences crafted for ambitious teams.</p>
+  </div>
+</section>
+
+
+
+<!-- ═══ WORK GRID ═══ -->
+<section class="work-section">
+  <div class="work-grid" id="work-grid">
+
+    <a href="project-boxigo.html" class="wc" data-cat="uiux" data-hover>
+      <div class="wc-vis tint-teal">
+        <span class="wc-year">2024</span>
+        <div class="wc-mg">
+          <div class="mg-dots">
+            <div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div>
+            <div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div>
+            <div class="mg-dot-item hi"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">UI/UX Design · Product</div>
+      <div class="wc-title">Boxigo '2024</div>
+      <div class="wc-desc">A complete structural redesign and architectural user experience system mapping client delivery flow maps.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="uiux" data-hover>
+      <div class="wc-vis tint-blue">
+        <span class="wc-year">2024</span>
+        <div class="wc-mg">
+          <div class="mg-grid">
+            <div class="mg-block hi"></div><div class="mg-block"></div><div class="mg-block hi"></div><div class="mg-block hi"></div>
+            <div class="mg-block"></div><div class="mg-block hi"></div><div class="mg-block"></div><div class="mg-block hi"></div>
+            <div class="mg-block hi"></div><div class="mg-block hi"></div><div class="mg-block"></div><div class="mg-block hi"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Figma Systems · Architecture</div>
+      <div class="wc-title">Untitled UI Design System</div>
+      <div class="wc-desc">High-fidelity typography scales, dynamic auto-layouts, and adaptive token grids optimized for scalability.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="ai" data-hover>
+      <div class="wc-vis tint-amber">
+        <span class="wc-year">2025</span>
+        <div class="wc-mg">
+          <div class="mg-pulse"></div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Generative Art · Midjourney</div>
+      <div class="wc-title">Synthetic Aesthetics</div>
+      <div class="wc-desc">Advanced image composition matrices using Google AI Pro and custom stable diffusion render parameters.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="motion" data-hover>
+      <div class="wc-vis tint-purple">
+        <span class="wc-year">2025</span>
+        <div class="wc-mg">
+          <div class="mg-lines">
+            <div class="mg-line"></div><div class="mg-line"></div><div class="mg-line"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Motion · After Effects</div>
+      <div class="wc-title">Kinetic Layout Systems</div>
+      <div class="wc-desc">Butter-smooth layout transitions, vector loop assets, and promo clips processed in full-spectrum dynamics.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="branding" data-hover>
+      <div class="wc-vis tint-coral">
+        <span class="wc-year">2025</span>
+        <div class="wc-mg">
+          <div class="mg-rings-w">
+            <div class="mg-rr mg-rr1"></div>
+            <div class="mg-rr mg-rr2"></div>
+            <div class="mg-rr mg-rr3"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Branding · Art Direction</div>
+      <div class="wc-title">Vanguard Studios</div>
+      <div class="wc-desc">A high-contrast visual identity and minimalist design system for a premium independent film production house.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="ai" data-hover>
+      <div class="wc-vis tint-green">
+        <span class="wc-year">2026</span>
+        <div class="wc-mg">
+          <div class="mg-radar"></div>
+          <div class="mg-r1"></div>
+          <div class="mg-r2"></div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">AI Production · Cinematic</div>
+      <div class="wc-title">Chronos Campaign</div>
+      <div class="wc-desc">A gritty commercial advertising campaign combining generative AI video arrays with high-impact neo-noir cinematic storytelling.</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="contact">
+  <div class="ft-inner">
+    <div class="ft-cta">
+      <span class="chip"><span class="chip-dot"></span>Let's build something</span>
+      <h2 class="ft-h2">
+        <span class="reveal-mask" style="display:block"><span>Have an idea?</span></span>
+        <span class="reveal-mask" style="display:block">
+          <span><em class="serif-italic">Let's make</em> it</span>
+        </span>
+        <span class="reveal-mask" style="display:block">
+          <span class="text-stroke">unforgettable.</span>
+        </span>
+      </h2>
+      <div class="ft-btns">
+        <a href="tel:+917907590856" class="btn-mint" data-hover>
+          <i class="fa-solid fa-phone" style="font-size:.75rem"></i> Call Now
+        </a>
+        <a href="https://wa.me/917907590856?text=Hi%20Krexlab,%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" class="btn-ghost" data-hover>
+          <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+        <a href="mailto:hello@krexlab.in" class="btn-ghost" data-hover>
+          <i class="fa-regular fa-envelope" style="font-size:.8rem"></i> hello@krexlab.in
+        </a>
+      </div>
+    </div>
+    <div class="ft-bar">
+      <div>
+        <div class="ft-copy">© 2026 Krexlab Studio</div>
+        <div class="ft-copy" style="margin-top:4px;opacity:.6">Crafted with care · Est. 2025</div>
+      </div>
+      <div class="ft-clock">
+        <span class="ft-clock-dot"></span>
+        Studio time · <span id="ft-clock">—</span> IST
+      </div>
+      <div class="ft-socials">
+        <a href="https://instagram.com/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://linkedin.com/company/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://behance.net/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-behance"></i></a>
+      </div>
+    </div>
+    <div class="ft-brand">krexlab</div>
+  </div>
+</footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* CURSOR */
+const curDot=document.getElementById('cursor-dot'),curRing=document.getElementById('cursor-ring');
+let mx=innerWidth/2,my=innerHeight/2,dx=mx,dy=my,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+gsap.ticker.add(()=>{
+  dx+=(mx-dx)*.55;dy+=(my-dy)*.55;rx+=(mx-rx)*.18;ry+=(my-ry)*.18;
+  gsap.set(curDot,{x:dx,y:dy});gsap.set(curRing,{x:rx,y:ry});
+});
+document.querySelectorAll('a,button,[data-hover]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>curRing.classList.add('is-hover'));
+  el.addEventListener('mouseleave',()=>curRing.classList.remove('is-hover'));
+});
+
+/* PARTICLES */
+const canvas=document.getElementById('particle-canvas'),ctx=canvas.getContext('2d');
+let pts=[],frame=0;const mouse={x:-9999,y:-9999,r:160};
+function resize(){
+  const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;
+  canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const N=w<768?24:50,MAX=w<768?100:130;
+  pts=Array.from({length:N},()=>{const x=Math.random()*w,y=Math.random()*h;return{x,y,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.2+.5,dx:0,dy:0,MAX}});
+}
+resize();window.addEventListener('resize',resize);
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+function tick(){
+  requestAnimationFrame(tick);frame++;
+  if(innerWidth<768&&frame%2===0)return;
+  const w=innerWidth,h=innerHeight;ctx.clearRect(0,0,w,h);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+    const d=Math.hypot(mouse.x-p.x,mouse.y-p.y);
+    p.dx=p.x;p.dy=p.y;
+    if(d<mouse.r&&d>0){const f=(mouse.r-d)/mouse.r;p.dx-=(mouse.x-p.x)/d*f*30;p.dy-=(mouse.y-p.y)/d*f*30}
+    ctx.beginPath();ctx.arc(p.dx,p.dy,p.r,0,Math.PI*2);ctx.fillStyle='rgba(77,212,168,.55)';ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const d=Math.hypot(pts[i].dx-pts[j].dx,pts[i].dy-pts[j].dy);
+    if(d<pts[i].MAX){ctx.beginPath();ctx.moveTo(pts[i].dx,pts[i].dy);ctx.lineTo(pts[j].dx,pts[j].dy);ctx.strokeStyle=`rgba(77,212,168,${(1-d/pts[i].MAX)*.14})`;ctx.lineWidth=.5;ctx.stroke()}
+  }
+}
+tick();
+
+/* HEADER */
+const hdr=document.getElementById('main-header');let lastY=0;
+window.addEventListener('scroll',()=>{
+  const s=scrollY;hdr.classList.toggle('scrolled',s>30);
+  if(s>100&&s>lastY+2)hdr.classList.add('hide');else if(s<lastY-2)hdr.classList.remove('hide');
+  lastY=s;
+});
+
+/* MOBILE MENU */
+const mobMenu=document.getElementById('mob-menu'),mobOverlay=document.getElementById('mob-overlay');
+function openMenu(){
+  mobMenu.classList.add('open');mobOverlay.classList.add('show');
+  gsap.fromTo('.mob-link',{x:24,opacity:0},{x:0,opacity:1,stagger:.08,duration:.65,ease:'power3.out',delay:.15});
+}
+function closeMenu(){mobMenu.classList.remove('open');mobOverlay.classList.remove('show')}
+document.getElementById('mob-btn').addEventListener('click',openMenu);
+document.getElementById('mob-close').addEventListener('click',closeMenu);
+mobOverlay.addEventListener('click',closeMenu);
+mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+
+
+
+/* ANIMATIONS */
+window.addEventListener('load',()=>{
+  ScrollTrigger.refresh();
+
+  gsap.to('.hero-eyebrow',{y:0,opacity:1,duration:.9,delay:.2,ease:'power3.out'});
+  gsap.to('.hero-h1 .reveal-mask>span',{y:'0%',duration:1.2,stagger:.1,ease:'power4.out',delay:.3});
+  gsap.to('.hero-desc',{y:0,opacity:1,duration:.9,delay:.7,ease:'power3.out'});
+
+  gsap.to('.hero-h1',{yPercent:-10,ease:'none',
+    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1.2}});
+
+  gsap.utils.toArray('.wc').forEach((c,i)=>{
+    gsap.to(c,{y:0,opacity:1,duration:1,ease:'power3.out',
+      delay:(i%3)*.1,
+      scrollTrigger:{trigger:c,start:'top 88%'}});
+  });
+
+  gsap.fromTo('.ft-h2 .reveal-mask>span',{y:'110%'},{y:'0%',duration:1.2,stagger:.08,ease:'power4.out',
+    scrollTrigger:{trigger:'footer',start:'top 80%'}});
+  gsap.fromTo('.ft-btns',{y:24,opacity:0},{y:0,opacity:1,duration:.9,delay:.1,ease:'power3.out',
+    scrollTrigger:{trigger:'.ft-btns',start:'top 88%'}});
+});
+
+/* MAGNETIC */
+document.querySelectorAll('.btn-mint,.btn-ghost').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.28,y:(e.clientY-r.top-r.height/2)*.28,duration:.3,ease:'power2.out'})});
+  btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+});
+
+/* CLOCK */
+function updateClock(){const el=document.getElementById('ft-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
+setInterval(updateClock,1000);updateClock();
+</script>
+<script>
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on("init", user => {
+    if (!user) {
+      window.netlifyIdentity.on("login", () => {
+        document.location.href = "/admin/";
+      });
+    }
+  });
+}
+</script>
+</body>
+</html>

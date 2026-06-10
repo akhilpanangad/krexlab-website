@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start a Project — Krexlab Studio</title>
+<meta name="description" content="Have a project in mind? Let's talk. Krexlab Studio — branding, web design, AI content and social media.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{
+  --mint:#4dd4a8;--bg:#07181f;--bg-soft:#0c2530;
+  --ink:#f4f7f6;--muted:#8ba2ab;--border:rgba(255,255,255,.06);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:96px 96px;
+}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.04;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+::-webkit-scrollbar{width:0}
+
+/* CURSOR */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--mint);border-radius:9999px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(77,212,168,.55);border-radius:9999px;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.2,.8,.2,1),height .3s,border-color .3s,background .3s}
+.cursor-ring.is-hover{width:72px;height:72px;background:rgba(77,212,168,.08);border-color:rgba(77,212,168,.8)}
+@media(max-width:768px){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+
+#particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:.4}
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 50%,rgba(77,212,168,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 10% 20%,rgba(77,212,168,.05) 0%,transparent 55%)}
+
+/* HEADER */
+header{position:fixed;top:0;inset-inline:0;z-index:50;padding:20px 5vw;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,border-color .5s,transform .55s;border-bottom:1px solid transparent}
+header.scrolled{padding:12px 5vw;background:rgba(7,24,31,.7);backdrop-filter:blur(20px);border-color:rgba(255,255,255,.05)}
+header.hide{transform:translateY(-100%)}
+.nav-logo img{height:24px;width:auto}
+.nav-links{display:flex;align-items:center;gap:2vw}
+.nav-links a{font-size:.82rem;color:rgba(255,255,255,.7);text-decoration:none;transition:color .3s}
+.nav-links a:hover{color:var(--mint)}
+.nav-cta{padding:9px 20px;border-radius:9999px;background:var(--mint);color:#07181f!important;font-weight:500!important;transition:background .3s!important}
+.nav-cta:hover{background:#fff!important}
+.nav-mob-btn{display:none;width:40px;height:40px;border-radius:9999px;background:var(--mint);color:#07181f;align-items:center;justify-content:center;border:none;cursor:pointer;flex-direction:column;gap:3px}
+.mob-line{display:block;width:16px;height:2px;background:#07181f}
+@media(max-width:768px){.nav-links{display:none}.nav-mob-btn{display:flex}}
+
+/* MOBILE MENU */
+#mob-overlay{position:fixed;inset:0;z-index:59;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .5s}
+#mob-overlay.show{opacity:1;pointer-events:all}
+#mob-menu{position:fixed;top:0;right:0;bottom:0;width:min(320px,85vw);z-index:60;background:#0a1e28;border-left:1px solid rgba(255,255,255,.07);transform:translateX(100%);transition:transform .6s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;padding:28px 28px 32px}
+#mob-menu.open{transform:translateX(0)}
+.mob-close-btn{width:38px;height:38px;border-radius:9999px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:border-color .3s,color .3s;margin-left:auto}
+.mob-close-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.mob-logo img{height:20px;opacity:.7}
+.mob-nav{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center}
+.mob-nav a{font-size:clamp(1.6rem,6vw,2.2rem);font-weight:300;letter-spacing:-.03em;color:rgba(255,255,255,.55);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;opacity:0;transform:translateX(24px);transition:color .3s}
+.mob-nav a:last-child{border-bottom:none}
+.mob-nav a:hover{color:var(--mint)}
+.mob-nav a .arr{font-size:.9rem;color:rgba(255,255,255,.2);transition:color .3s,transform .3s}
+.mob-nav a:hover .arr{color:var(--mint);transform:translate(3px,-3px)}
+.mob-nav a.mob-cta{color:var(--mint);font-family:'Instrument Serif',serif;font-style:italic}
+.mob-bottom{display:flex;flex-direction:column;gap:18px}
+.mob-soc-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.mob-socials{display:flex;gap:10px}
+.mob-soc-btn{width:36px;height:36px;border-radius:9999px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);text-decoration:none;font-size:.85rem;transition:border-color .3s,color .3s}
+.mob-soc-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-foot{display:flex;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.25);padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
+.mob-foot a{color:rgba(255,255,255,.25);text-decoration:none}
+
+/* UTILS */
+.page{position:relative;z-index:2}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,247,246,.75);border:1px solid rgba(255,255,255,.08);border-radius:9999px;background:rgba(255,255,255,.02);backdrop-filter:blur(6px)}
+.chip-dot{width:6px;height:6px;border-radius:9999px;background:var(--mint);box-shadow:0 0 12px var(--mint);flex-shrink:0}
+.serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+.reveal-mask{display:inline-block;overflow:hidden;vertical-align:bottom}
+.reveal-mask>span{display:inline-block;transform:translateY(110%)}
+@keyframes pulse-ring{0%{transform:scale(.8);opacity:.8}80%,100%{transform:scale(2.2);opacity:0}}
+@keyframes float-soft{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+/* ══════════════════════════
+   CONTACT PAGE LAYOUT
+══════════════════════════ */
+.contact-page{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;z-index:10;
+}
+@media(max-width:900px){.contact-page{grid-template-columns:1fr}}
+
+/* ── LEFT: info panel ── */
+.cp-left{
+  padding:20vh 5vw 8vh;
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  border-right:1px solid var(--border);
+  position:sticky;top:0;height:100vh;
+  overflow:hidden;
+}
+@media(max-width:900px){
+  .cp-left{
+    position:relative;height:auto;border-right:none;
+    border-bottom:1px solid var(--border);padding:18vh 5vw 4vh;
+    flex-direction:column;
+  }
+  /* on mobile: eyebrow → heading → desc → avail → socials → info goes last */
+  .cp-eyebrow{order:1}
+  .cp-h1{order:2}
+  .cp-desc{order:3}
+  #cp-avail{order:4}
+  #cp-info{order:6;margin-top:32px}
+  #cp-socials{order:5}
+  .cf-title{order:-1;padding:6vh 0 0;margin-bottom:0}
+  .cp-right{padding-top:4vh}
+}
+.cp-eyebrow{margin-bottom:24px;opacity:0;transform:translateY(16px)}
+.cp-h1{
+  font-family:'Outfit',sans-serif;font-weight:300;
+  font-size:clamp(2.8rem,4.5vw,5.5rem);
+  line-height:.95;letter-spacing:-.04em;
+  margin-bottom:28px;
+}
+.cp-h1 .serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+.cp-desc{
+  font-size:.95rem;line-height:1.8;color:var(--muted);
+  font-weight:300;max-width:380px;margin-bottom:40px;
+  opacity:0;transform:translateY(16px);
+}
+
+/* contact info rows */
+.cp-info{display:flex;flex-direction:column;gap:0;opacity:0;transform:translateY(16px)}
+.cp-info-item{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 0;border-bottom:1px solid var(--border);
+  text-decoration:none;color:var(--ink);
+  transition:color .3s;
+}
+.cp-info-item:first-child{border-top:1px solid var(--border)}
+.cp-info-item:hover{color:var(--mint)}
+.cp-info-icon{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:rgba(77,212,168,.08);border:1px solid rgba(77,212,168,.15);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mint);font-size:.85rem;
+  transition:background .3s,transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.cp-info-item:hover .cp-info-icon{background:rgba(77,212,168,.18);transform:scale(1.1)}
+.cp-info-label{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.cp-info-val{font-size:.9rem;font-weight:400}
+
+/* socials */
+.cp-socials{display:flex;gap:10px;margin-top:32px;opacity:0}
+.cp-soc{
+  width:38px;height:38px;border-radius:9999px;
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.5);text-decoration:none;font-size:.9rem;
+  transition:border-color .3s,color .3s;
+}
+.cp-soc:hover{border-color:var(--mint);color:var(--mint)}
+
+/* availability badge */
+.cp-avail{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;border-radius:9999px;
+  background:rgba(77,212,168,.08);border:1px solid rgba(77,212,168,.2);
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(77,212,168,.9);margin-bottom:32px;
+  width:fit-content;opacity:0;
+}
+.cp-avail-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse-ring 2s ease-in-out infinite}
+
+/* ── RIGHT: form panel ── */
+.cp-right{
+  padding:20vh 5vw 8vh;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+@media(max-width:900px){.cp-right{padding:6vh 5vw 10vh}}
+
+.cf-title{
+  font-family:'Outfit',sans-serif;font-weight:300;
+  font-size:clamp(1.4rem,2vw,2rem);letter-spacing:-.03em;
+  margin-bottom:36px;opacity:0;transform:translateY(16px);
+}
+.cf-title .serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+
+/* form */
+.contact-form{display:flex;flex-direction:column;gap:20px;opacity:0;transform:translateY(20px)}
+
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.cf-row{grid-template-columns:1fr}}
+
+.cf-field{display:flex;flex-direction:column;gap:8px}
+.cf-label{
+  font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;
+}
+.cf-input,.cf-textarea,.cf-select{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:14px 16px;
+  color:var(--ink);font-family:'Outfit',sans-serif;
+  font-size:.9rem;font-weight:300;
+  outline:none;
+  transition:border-color .3s,background .3s;
+  -webkit-appearance:none;
+  width:100%;
+}
+.cf-input::placeholder,.cf-textarea::placeholder{color:rgba(255,255,255,.2)}
+.cf-input:focus,.cf-textarea:focus,.cf-select:focus{
+  border-color:rgba(77,212,168,.45);
+  background:rgba(77,212,168,.03);
+}
+.cf-textarea{resize:vertical;min-height:120px;line-height:1.65}
+.cf-select{cursor:pointer;color:rgba(255,255,255,.6)}
+.cf-select option{background:#0c2530;color:var(--ink)}
+
+/* service checkboxes */
+
+
+/* submit */
+.cf-submit{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 36px;border-radius:9999px;
+  background:var(--mint);color:#07181f;
+  font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:500;
+  border:none;cursor:pointer;
+  transition:background .35s,transform .3s;
+  width:fit-content;margin-top:8px;
+}
+.cf-submit:hover{background:#fff;transform:translateY(-2px)}
+.cf-submit i{font-size:.8rem}
+
+/* success state */
+.cf-success{
+  display:none;
+  flex-direction:column;align-items:center;text-align:center;
+  gap:16px;padding:48px 32px;
+  border:1px solid rgba(77,212,168,.25);border-radius:20px;
+  background:rgba(77,212,168,.04);
+}
+.cf-success.show{display:flex}
+.cf-success-icon{
+  width:56px;height:56px;border-radius:50%;
+  background:rgba(77,212,168,.12);
+  border:1px solid rgba(77,212,168,.3);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mint);font-size:1.4rem;
+}
+.cf-success h3{font-size:1.4rem;font-weight:300;letter-spacing:-.03em}
+.cf-success p{font-size:.88rem;color:var(--muted);max-width:280px;line-height:1.6}
+
+/* ── BOTTOM BAR ── */
+.cp-bar{
+  position:relative;z-index:10;
+  padding:20px 5vw;
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+.cp-bar-copy{font-size:.72rem;color:rgba(255,255,255,.3)}
+.cp-clock{display:flex;align-items:center;gap:6px;font-size:.72rem;color:rgba(255,255,255,.4)}
+.cp-clock-dot{width:5px;height:5px;border-radius:50%;background:var(--mint);animation:pulse-ring 2.4s ease-in-out infinite}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="cursor-dot" id="cursor-dot"></div>
+<canvas id="particle-canvas"></canvas>
+<div class="ambient"></div>
+<div id="mob-overlay"></div>
+
+<div id="mob-menu">
+  <div class="mob-top">
+    <a href="index.html" class="mob-logo"><img src="logo.svg" alt="Krexlab"></a>
+    <button class="mob-close-btn" id="mob-close">✕</button>
+  </div>
+  <nav class="mob-nav">
+    <a href="work.html" class="mob-link" data-hover>Work <span class="arr">↗</span></a>
+    <a href="services.html" class="mob-link" data-hover>Services <span class="arr">↗</span></a>
+    <a href="contact.html" class="mob-link mob-cta" data-hover>Start a project <span class="arr">↗</span></a>
+  </nav>
+  <div class="mob-bottom">
+    <div class="mob-soc-label">Follow us</div>
+    <div class="mob-socials">
+      <a href="https://instagram.com/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://linkedin.com/company/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="https://behance.net/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-behance"></i></a>
+      <a href="https://wa.me/917907590856" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+    <div class="mob-foot">
+      <a href="mailto:hello@krexlab.in">hello@krexlab.in</a>
+      <span>© 2026 Krexlab</span>
+    </div>
+  </div>
+</div>
+
+<header id="main-header">
+  <a href="index.html" class="nav-logo" data-hover><img src="logo.svg" alt="Krexlab"></a>
+  <div class="nav-links">
+    <a href="work.html" data-hover>Work</a>
+    <a href="services.html" data-hover>Services</a>
+    <a href="contact.html" class="nav-cta" data-hover>Start a project</a>
+  </div>
+  <button class="nav-mob-btn" id="mob-btn" aria-label="Menu">
+    <span class="mob-line"></span><span class="mob-line"></span>
+  </button>
+</header>
+
+<div class="page">
+<div class="contact-page">
+
+  <!-- ═══ LEFT ═══ -->
+  <div class="cp-left">
+    <div>
+      <div class="cp-eyebrow">
+        <span class="chip"><span class="chip-dot"></span>Let's collaborate</span>
+      </div>
+      <h1 class="cp-h1">
+        <span class="reveal-mask" style="display:block"><span>Start a</span></span>
+        <span class="reveal-mask" style="display:block">
+          <span><em class="serif-italic">project.</em></span>
+        </span>
+      </h1>
+      <p class="cp-desc">Tell us what you're building. We'll get back within 24 hours with a plan, a timeline, and a clear next step.</p>
+
+      <div class="cp-avail" id="cp-avail">
+        <span class="cp-avail-dot"></span>
+        Currently taking new projects
+      </div>
+
+      <div class="cp-info" id="cp-info">
+        <a href="tel:+917907590856" class="cp-info-item" data-hover>
+          <div class="cp-info-icon"><i class="fa-solid fa-phone"></i></div>
+          <div>
+            <span class="cp-info-label">Call us</span>
+            <span class="cp-info-val">+91 79075 90856</span>
+          </div>
+        </a>
+        <a href="mailto:hello@krexlab.in" class="cp-info-item" data-hover>
+          <div class="cp-info-icon"><i class="fa-regular fa-envelope"></i></div>
+          <div>
+            <span class="cp-info-label">Email</span>
+            <span class="cp-info-val">hello@krexlab.in</span>
+          </div>
+        </a>
+        <a href="https://wa.me/917907590856" target="_blank" class="cp-info-item" data-hover>
+          <div class="cp-info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div>
+            <span class="cp-info-label">WhatsApp</span>
+            <span class="cp-info-val">Chat with us directly</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="cp-socials" id="cp-socials">
+        <a href="https://instagram.com/krexlab" target="_blank" class="cp-soc" data-hover><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://linkedin.com/company/krexlab" target="_blank" class="cp-soc" data-hover><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://behance.net/krexlab" target="_blank" class="cp-soc" data-hover><i class="fa-brands fa-behance"></i></a>
+        <a href="https://www.behance.net/krexlab" target="_blank" class="cp-soc" data-hover><i class="fa-brands fa-dribbble"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RIGHT: FORM ═══ -->
+  <div class="cp-right">
+
+    <div class="cf-title">
+      Tell us about your <em class="serif-italic">vision.</em>
+    </div>
+
+    <form class="contact-form" id="contact-form" novalidate>
+
+      <!-- Name + Company in one row -->
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label" for="cf-name">Your Name</label>
+          <input class="cf-input" id="cf-name" type="text" placeholder="Alex Johnson" required>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label" for="cf-company">Company / Brand <span style="opacity:.45;font-size:.6rem;letter-spacing:.1em">(optional)</span></label>
+          <input class="cf-input" id="cf-company" type="text" placeholder="Acme Inc.">
+        </div>
+      </div>
+
+      <!-- Email + Phone in one row -->
+      <div class="cf-row">
+        <div class="cf-field">
+          <label class="cf-label" for="cf-email">Email <span style="opacity:.45;font-size:.6rem;letter-spacing:.1em">(optional)</span></label>
+          <input class="cf-input" id="cf-email" type="email" placeholder="hello@brand.com">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label" for="cf-phone">Phone Number</label>
+          <input class="cf-input" id="cf-phone" type="tel" placeholder="+91 98765 43210" required>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="cf-field">
+        <label class="cf-label" for="cf-message">Tell us about your project</label>
+        <textarea class="cf-textarea" id="cf-message" placeholder="Describe your project, goals, timeline..." required></textarea>
+      </div>
+
+      <button type="submit" class="cf-submit" data-hover>
+        Send Message <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </form>
+
+    <!-- success -->
+    <div class="cf-success" id="cf-success">
+      <div class="cf-success-icon"><i class="fa-solid fa-check"></i></div>
+      <h3>Message received!</h3>
+      <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
+      <a href="work.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-size:.82rem;color:var(--mint);text-decoration:none;opacity:.8">
+        <i class="fa-solid fa-arrow-left" style="font-size:.7rem"></i> Back to Work
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- bottom bar -->
+<div class="cp-bar">
+  <span class="cp-bar-copy">© 2026 Krexlab Studio · Est. 2025</span>
+  <div class="cp-clock">
+    <span class="cp-clock-dot"></span>
+    Studio time · <span id="cp-clock">—</span> IST
+  </div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+/* CURSOR */
+const curDot=document.getElementById('cursor-dot'),curRing=document.getElementById('cursor-ring');
+let mx=innerWidth/2,my=innerHeight/2,dx=mx,dy=my,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+gsap.ticker.add(()=>{dx+=(mx-dx)*.55;dy+=(my-dy)*.55;rx+=(mx-rx)*.18;ry+=(my-ry)*.18;gsap.set(curDot,{x:dx,y:dy});gsap.set(curRing,{x:rx,y:ry})});
+document.querySelectorAll('a,button,[data-hover]').forEach(el=>{
+  el.addEventListener('mouseenter',()=>curRing.classList.add('is-hover'));
+  el.addEventListener('mouseleave',()=>curRing.classList.remove('is-hover'));
+});
+
+/* PARTICLES */
+const canvas=document.getElementById('particle-canvas'),ctx=canvas.getContext('2d');
+let pts=[],frame=0;const mouse={x:-9999,y:-9999,r:160};
+function resize(){const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const N=w<768?20:40,MAX=w<768?90:120;pts=Array.from({length:N},()=>{const x=Math.random()*w,y=Math.random()*h;return{x,y,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.1+.5,dx:0,dy:0,MAX}})}
+resize();window.addEventListener('resize',resize);window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+function tickP(){requestAnimationFrame(tickP);frame++;if(innerWidth<768&&frame%2===0)return;const w=innerWidth,h=innerHeight;ctx.clearRect(0,0,w,h);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;const d=Math.hypot(mouse.x-p.x,mouse.y-p.y);p.dx=p.x;p.dy=p.y;if(d<mouse.r&&d>0){const f=(mouse.r-d)/mouse.r;p.dx-=(mouse.x-p.x)/d*f*28;p.dy-=(mouse.y-p.y)/d*f*28}ctx.beginPath();ctx.arc(p.dx,p.dy,p.r,0,Math.PI*2);ctx.fillStyle='rgba(77,212,168,.5)';ctx.fill()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].dx-pts[j].dx,pts[i].dy-pts[j].dy);if(d<pts[i].MAX){ctx.beginPath();ctx.moveTo(pts[i].dx,pts[i].dy);ctx.lineTo(pts[j].dx,pts[j].dy);ctx.strokeStyle=`rgba(77,212,168,${(1-d/pts[i].MAX)*.13})`;ctx.lineWidth=.5;ctx.stroke()}}}
+tickP();
+
+/* HEADER */
+const hdr=document.getElementById('main-header');let lastY=0;
+window.addEventListener('scroll',()=>{const s=scrollY;hdr.classList.toggle('scrolled',s>30);if(s>100&&s>lastY+2)hdr.classList.add('hide');else if(s<lastY-2)hdr.classList.remove('hide');lastY=s});
+
+/* MOBILE MENU */
+const mobMenu=document.getElementById('mob-menu'),mobOverlay=document.getElementById('mob-overlay');
+function openMenu(){mobMenu.classList.add('open');mobOverlay.classList.add('show');gsap.fromTo('.mob-link',{x:24,opacity:0},{x:0,opacity:1,stagger:.08,duration:.65,ease:'power3.out',delay:.15})}
+function closeMenu(){mobMenu.classList.remove('open');mobOverlay.classList.remove('show')}
+document.getElementById('mob-btn').addEventListener('click',openMenu);
+document.getElementById('mob-close').addEventListener('click',closeMenu);
+mobOverlay.addEventListener('click',closeMenu);
+mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+
+/* PAGE ANIMATIONS */
+window.addEventListener('load',()=>{
+  const tl = gsap.timeline({defaults:{ease:'power3.out'}});
+  tl.to('.cp-eyebrow',   {y:0, opacity:1, duration:.8, delay:.2})
+    .to('.cp-h1 .reveal-mask>span', {y:'0%', duration:1.1, stagger:.1, ease:'power4.out'}, '-=.5')
+    .to('.cp-desc',      {y:0, opacity:1, duration:.8}, '-=.4')
+    .to('#cp-avail',     {opacity:1, duration:.7}, '-=.3')
+    .to('#cp-info',      {y:0, opacity:1, duration:.8}, '-=.3')
+    .to('#cp-socials',   {opacity:1, duration:.7}, '-=.2')
+    .to('.cf-title',     {y:0, opacity:1, duration:.8}, '-=.8')
+    .to('.contact-form', {y:0, opacity:1, duration:.9}, '-=.5');
+});
+
+/* FORM SUBMIT — stay on page, show success */
+document.getElementById('contact-form').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const btn = e.target.querySelector('.cf-submit');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending…';
+  btn.disabled = true;
+
+  const name    = document.getElementById('cf-name').value.trim();
+  const company = document.getElementById('cf-company').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const phone   = document.getElementById('cf-phone').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+
+  /* ── Formspree: create free account at formspree.io, get your form ID
+     then replace YOUR_FORM_ID below ──
+  try {
+    await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, company, email, phone, message })
+    });
+  } catch(err) { console.error(err); }
+  ── */
+
+  // simulate network delay
+  await new Promise(r => setTimeout(r, 900));
+
+  // hide form, show success — user stays on page
+  gsap.to('#contact-form', {opacity:0, y:-20, duration:.4, ease:'power2.in', onComplete:()=>{
+    document.getElementById('contact-form').style.display = 'none';
+    const s = document.getElementById('cf-success');
+    s.classList.add('show');
+    gsap.fromTo(s, {opacity:0, y:20}, {opacity:1, y:0, duration:.6, ease:'power3.out'});
+  }});
+});
+
+/* MAGNETIC */
+document.querySelectorAll('.cf-submit').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.28,y:(e.clientY-r.top-r.height/2)*.28,duration:.3,ease:'power2.out'})});
+  btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+});
+
+/* CLOCK */
+function updateClock(){const el=document.getElementById('cp-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
+setInterval(updateClock,1000);updateClock();
+</script>
+<script>
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on("init", user => {
+    if (!user) {
+      window.netlifyIdentity.on("login", () => {
+        document.location.href = "/admin/";
+      });
+    }
+  });
+}
+</script>
+</body>
+</html>
