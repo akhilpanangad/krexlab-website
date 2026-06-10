@@ -692,7 +692,6 @@ footer{
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 
@@ -748,7 +747,7 @@ footer{
       <a href="https://wa.me/917907590856" target="_blank" class="mob-soc-btn" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
     <div class="mob-foot">
-      <a href="mailto:hello@krexlab.in">hello@krexlab.in</a>
+      <a href="https://mail.google.com/mail/?view=cm&to=hello@krexlab.in" target="_blank">hello@krexlab.in</a>
       <span>© 2026 Krexlab</span>
     </div>
   </div>
@@ -1070,7 +1069,7 @@ footer{
         <a href="https://wa.me/917907590856?text=Hi%20Krexlab,%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" class="btn-ghost" data-hover>
           <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
         </a>
-        <a href="mailto:hello@krexlab.in" class="btn-ghost" data-hover>
+        <a href="https://mail.google.com/mail/?view=cm&to=hello@krexlab.in" target="_blank" class="btn-ghost" data-hover>
           <i class="fa-regular fa-envelope" style="font-size:.8rem"></i> hello@krexlab.in
         </a>
       </div>
@@ -1281,17 +1280,6 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   a.addEventListener('mouseenter', () => gsap.to(a.querySelector('.arr-r'),{x:6,duration:.3}));
   a.addEventListener('mouseleave', () => gsap.to(a.querySelector('.arr-r'),{x:0,duration:.4,ease:'elastic.out(1,.4)'}));
 });
-</script>
-<script>
-if (window.netlifyIdentity) {
-  window.netlifyIdentity.on("init", user => {
-    if (!user) {
-      window.netlifyIdentity.on("login", () => {
-        document.location.href = "/admin/";
-      });
-    }
-  });
-}
 </script>
 </body>
 </html>
