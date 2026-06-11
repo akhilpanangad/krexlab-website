@@ -1,8 +1,7 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: akhilpanangad/krexlab-website
   branch: main
-  identity_url: https://unrivaled-stardust-f59f2b.netlify.app
-  gateway_url: https://unrivaled-stardust-f59f2b.netlify.app/.netlify/git
 
 media_folder: "images"
 public_folder: "/images"
