@@ -21,9 +21,11 @@ collections:
       - { label: "Category Filter", name: "category", widget: "select", options: ["branding", "uiux", "motion", "ai"] }
       - { label: "Year", name: "year", widget: "string", default: "2026" }
       - { label: "Short Description", name: "description", widget: "text" }
-      - { label: "Cover Image", name: "cover", widget: "image" }
+      - { label: "Cover Image", name: "cover", widget: "image", required: false, hint: "Work page card image (4:3 ratio, 1200x900px)" }
       - { label: "Card Colour Tint", name: "tint", widget: "select", options: ["tint-teal", "tint-blue", "tint-amber", "tint-purple", "tint-coral", "tint-green"], default: "tint-teal" }
-      - { label: "Project Page URL", name: "url", widget: "string", required: false, hint: "e.g. project-boxigo.html" }
+      - { label: "Project Page URL", name: "url", widget: "string", required: false, hint: "e.g. project-boxigo.html — leave blank for #contact" }
+      - { label: "Show on Homepage", name: "homepage", widget: "boolean", default: false, hint: "Enable to show this project on homepage work section" }
+      - { label: "Homepage Order", name: "order", widget: "number", required: false, hint: "1-4, controls position on homepage" }
 
   - name: "services"
     label: "Services"
