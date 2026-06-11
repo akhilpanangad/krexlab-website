@@ -330,10 +330,101 @@ footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid r
 <!-- ═══ WORK GRID ═══ -->
 <section class="work-section">
   <div class="work-grid" id="work-grid">
-    <!-- Loading state -->
-    <div id="wg-loading" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:80px 0;color:rgba(255,255,255,.3);font-size:.85rem;gap:12px">
-      <i class="fa-solid fa-spinner fa-spin"></i> Loading projects…
-    </div>
+
+    <a href="project-boxigo.html" class="wc" data-cat="uiux" data-hover>
+      <div class="wc-vis tint-teal">
+        <span class="wc-year">2024</span>
+        <div class="wc-mg">
+          <div class="mg-dots">
+            <div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div>
+            <div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div>
+            <div class="mg-dot-item hi"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">UI/UX Design · Product</div>
+      <div class="wc-title">Boxigo '2024</div>
+      <div class="wc-desc">A complete structural redesign and architectural user experience system mapping client delivery flow maps.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="uiux" data-hover>
+      <div class="wc-vis tint-blue">
+        <span class="wc-year">2024</span>
+        <div class="wc-mg">
+          <div class="mg-grid">
+            <div class="mg-block hi"></div><div class="mg-block"></div><div class="mg-block hi"></div><div class="mg-block hi"></div>
+            <div class="mg-block"></div><div class="mg-block hi"></div><div class="mg-block"></div><div class="mg-block hi"></div>
+            <div class="mg-block hi"></div><div class="mg-block hi"></div><div class="mg-block"></div><div class="mg-block hi"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Figma Systems · Architecture</div>
+      <div class="wc-title">Untitled UI Design System</div>
+      <div class="wc-desc">High-fidelity typography scales, dynamic auto-layouts, and adaptive token grids optimized for scalability.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="ai" data-hover>
+      <div class="wc-vis tint-amber">
+        <span class="wc-year">2025</span>
+        <div class="wc-mg">
+          <div class="mg-pulse"></div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Generative Art · Midjourney</div>
+      <div class="wc-title">Synthetic Aesthetics</div>
+      <div class="wc-desc">Advanced image composition matrices using Google AI Pro and custom stable diffusion render parameters.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="motion" data-hover>
+      <div class="wc-vis tint-purple">
+        <span class="wc-year">2025</span>
+        <div class="wc-mg">
+          <div class="mg-lines">
+            <div class="mg-line"></div><div class="mg-line"></div><div class="mg-line"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Motion · After Effects</div>
+      <div class="wc-title">Kinetic Layout Systems</div>
+      <div class="wc-desc">Butter-smooth layout transitions, vector loop assets, and promo clips processed in full-spectrum dynamics.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="branding" data-hover>
+      <div class="wc-vis tint-coral">
+        <span class="wc-year">2025</span>
+        <div class="wc-mg">
+          <div class="mg-rings-w">
+            <div class="mg-rr mg-rr1"></div>
+            <div class="mg-rr mg-rr2"></div>
+            <div class="mg-rr mg-rr3"></div>
+          </div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">Branding · Art Direction</div>
+      <div class="wc-title">Vanguard Studios</div>
+      <div class="wc-desc">A high-contrast visual identity and minimalist design system for a premium independent film production house.</div>
+    </a>
+
+    <a href="#contact" class="wc" data-cat="ai" data-hover>
+      <div class="wc-vis tint-green">
+        <span class="wc-year">2026</span>
+        <div class="wc-mg">
+          <div class="mg-radar"></div>
+          <div class="mg-r1"></div>
+          <div class="mg-r2"></div>
+        </div>
+        <div class="wc-arrow">↗</div>
+      </div>
+      <div class="wc-tag">AI Production · Cinematic</div>
+      <div class="wc-title">Chronos Campaign</div>
+      <div class="wc-desc">A gritty commercial advertising campaign combining generative AI video arrays with high-impact neo-noir cinematic storytelling.</div>
+    </a>
+
   </div>
 </section>
 
@@ -455,7 +546,11 @@ mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 
 
 
+/* ANIMATIONS */
+window.addEventListener('load',()=>{
+  ScrollTrigger.refresh();
 
+  gsap.to('.hero-eyebrow',{y:0,opacity:1,duration:.9,delay:.2,ease:'power3.out'});
   gsap.to('.hero-h1 .reveal-mask>span',{y:'0%',duration:1.2,stagger:.1,ease:'power4.out',delay:.3});
   gsap.to('.hero-desc',{y:0,opacity:1,duration:.9,delay:.7,ease:'power3.out'});
 
@@ -478,110 +573,6 @@ mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 document.querySelectorAll('.btn-mint,.btn-ghost').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.28,y:(e.clientY-r.top-r.height/2)*.28,duration:.3,ease:'power2.out'})});
   btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
-});
-
-
-/* ══ DYNAMIC PROJECTS ══ */
-async function loadProjects() {
-  const grid = document.getElementById('work-grid');
-  try {
-    const res = await fetch('/api/projects');
-    const projects = await res.json();
-
-    if (!projects.length) {
-      // No CMS projects yet — show static fallback
-      loadStaticProjects();
-      return;
-    }
-
-    document.getElementById('wg-loading').remove();
-
-    projects.forEach((p, i) => {
-      const tint = p.tint || 'tint-teal';
-      const url  = p.url || '#contact';
-      const card = document.createElement('a');
-      card.href = url;
-      card.className = 'wc';
-      card.setAttribute('data-hover', '');
-      card.innerHTML = `
-        <div class="wc-vis ${tint}">
-          ${p.cover
-            ? `<img src="${p.cover}" class="wc-media-img" alt="${p.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`
-            : `<div class="wc-mg"><div class="mg-pulse"></div></div>`
-          }
-          <div class="wc-arrow">↗</div>
-        </div>
-        <div class="wc-tag">${p.tag || ''}</div>
-        <div class="wc-title">${p.title || ''}</div>
-        <div class="wc-desc">${p.description || ''}</div>
-      `;
-      grid.appendChild(card);
-
-      // Animate in
-      gsap.fromTo(card, {y:40,opacity:0}, {y:0,opacity:1,duration:.9,ease:'power3.out',
-        delay: (i%2)*.1,
-        scrollTrigger:{trigger:card,start:'top 88%'}
-      });
-
-      // Hover cursor
-      card.addEventListener('mouseenter', () => curRing.classList.add('is-hover'));
-      card.addEventListener('mouseleave', () => curRing.classList.remove('is-hover'));
-    });
-
-  } catch(err) {
-    console.error('Projects load error:', err);
-    loadStaticProjects();
-  }
-}
-
-function loadStaticProjects() {
-  // Fallback static projects
-  const grid = document.getElementById('work-grid');
-  document.getElementById('wg-loading')?.remove();
-
-  const staticProjects = [
-    { title:'Boxigo '2024', tag:'UI/UX Design · Product', desc:'A complete structural redesign and architectural user experience system.', tint:'tint-teal', url:'project-boxigo.html' },
-    { title:'Untitled UI Design System', tag:'Figma Systems · Architecture', desc:'High-fidelity typography scales and adaptive token grids.', tint:'tint-blue', url:'#contact' },
-    { title:'Synthetic Aesthetics', tag:'Generative Art · Midjourney', desc:'Advanced image composition using Google AI Pro.', tint:'tint-amber', url:'#contact' },
-    { title:'Kinetic Layout Systems', tag:'Motion · After Effects', desc:'Butter-smooth layout transitions and vector loop assets.', tint:'tint-purple', url:'#contact' },
-    { title:'Vanguard Studios', tag:'Branding · Art Direction', desc:'High-contrast visual identity for a premium film production house.', tint:'tint-coral', url:'#contact' },
-    { title:'Chronos Campaign', tag:'AI Production · Cinematic', desc:'A gritty commercial campaign combining generative AI video.', tint:'tint-green', url:'#contact' },
-  ];
-
-  staticProjects.forEach((p, i) => {
-    const card = document.createElement('a');
-    card.href = p.url;
-    card.className = 'wc';
-    card.setAttribute('data-hover', '');
-    card.innerHTML = `
-      <div class="wc-vis ${p.tint}">
-        <div class="wc-mg"><div class="mg-pulse"></div></div>
-        <div class="wc-arrow">↗</div>
-      </div>
-      <div class="wc-tag">${p.tag}</div>
-      <div class="wc-title">${p.title}</div>
-      <div class="wc-desc">${p.desc}</div>
-    `;
-    grid.appendChild(card);
-
-    gsap.fromTo(card, {y:40,opacity:0}, {y:0,opacity:1,duration:.9,ease:'power3.out',
-      delay:(i%2)*.1,
-      scrollTrigger:{trigger:card,start:'top 88%'}
-    });
-    card.addEventListener('mouseenter', () => curRing.classList.add('is-hover'));
-    card.addEventListener('mouseleave', () => curRing.classList.remove('is-hover'));
-  });
-}
-
-window.addEventListener('load', () => {
-  ScrollTrigger.refresh();
-  gsap.to('.hero-eyebrow',{y:0,opacity:1,duration:.9,delay:.2,ease:'power3.out'});
-  gsap.to('.hero-h1 .reveal-mask>span',{y:'0%',duration:1.2,stagger:.1,ease:'power4.out',delay:.3});
-  gsap.to('.hero-desc',{y:0,opacity:1,duration:.9,delay:.7,ease:'power3.out'});
-  gsap.to('.hero-h1',{yPercent:-10,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1.2}});
-  gsap.fromTo('.ft-h2 .reveal-mask>span',{y:'110%'},{y:'0%',duration:1.2,stagger:.08,ease:'power4.out',scrollTrigger:{trigger:'footer',start:'top 80%'}});
-  gsap.fromTo('.ft-btns',{y:24,opacity:0},{y:0,opacity:1,duration:.9,ease:'power3.out',scrollTrigger:{trigger:'.ft-btns',start:'top 88%'}});
-  loadProjects();
 });
 
 /* CLOCK */
