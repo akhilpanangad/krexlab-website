@@ -823,14 +823,21 @@ footer{
       <!-- Card 1 -->
       <!-- Card 1 — replace work-1.jpg with your image, or work-1.mp4 for video -->
       <!-- Card 1 — Boxigo -->
-      <a href="project-boxigo.html" class="work-card card-lift" data-hover>
+      <a href="project-boxigo.html" class="work-card card-lift" id="boxigo-card" data-hover>
         <div class="work-card-inner">
-          <!-- IMAGE: <img src="images/boxigo-hero.jpg" class="wc-media-img" alt="Boxigo Social Media Design"> -->
-          <div class="wc-visual vis-pulse">
-            <div class="glow"></div>
-            <div class="ring-sm"></div>
-            <div class="dot-c"></div>
-          </div>
+          <!-- Cover image — shows by default -->
+          <img src="images/boxigo-cover.jpg" class="wc-media-img" alt="Boxigo Social Media Design" id="boxigo-img">
+          <!-- Cover video — plays on hover (desktop) / scroll into view (mobile) -->
+          <video
+            src="images/boxigo-cover.mp4"
+            class="wc-media-vid"
+            id="boxigo-vid"
+            muted
+            loop
+            playsinline
+            preload="none"
+            style="opacity:0;transition:opacity .4s"
+          ></video>
           <div class="wc-arrow">↗</div>
         </div>
         <div class="wc-info">
@@ -1276,6 +1283,42 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   a.addEventListener('mouseenter', () => gsap.to(a.querySelector('.arr-r'),{x:6,duration:.3}));
   a.addEventListener('mouseleave', () => gsap.to(a.querySelector('.arr-r'),{x:0,duration:.4,ease:'elastic.out(1,.4)'}));
 });
+
+/* ── BOXIGO VIDEO — hover (desktop) + scroll into view (mobile) ── */
+(function(){
+  const card = document.getElementById('boxigo-card');
+  const vid  = document.getElementById('boxigo-vid');
+  const img  = document.getElementById('boxigo-img');
+  if(!card || !vid) return;
+
+  function playVideo(){
+    vid.play().catch(()=>{});
+    vid.style.opacity = '1';
+    if(img) img.style.opacity = '0';
+  }
+  function stopVideo(){
+    vid.pause();
+    vid.currentTime = 0;
+    vid.style.opacity = '0';
+    if(img) img.style.opacity = '1';
+  }
+
+  const isMobile = () => window.innerWidth < 768;
+
+  // Desktop — hover
+  card.addEventListener('mouseenter', () => { if(!isMobile()) playVideo(); });
+  card.addEventListener('mouseleave', () => { if(!isMobile()) stopVideo(); });
+
+  // Mobile — scroll into view (60% visible = play)
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!isMobile()) return;
+      if(e.isIntersecting && e.intersectionRatio >= 0.6) playVideo();
+      else stopVideo();
+    });
+  }, { threshold: 0.6 });
+  observer.observe(card);
+})();
 </script>
 </body>
 </html>
