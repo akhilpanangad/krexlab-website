@@ -368,7 +368,8 @@ footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid r
     <a href="project-boxigo.html" class="wc" id="work-boxigo" data-cat="uiux" data-hover>
       <div class="wc-vis tint-teal" style="position:relative">
         <span class="wc-year">2024</span>
-        <video src="images/boxigo-cover.mp4" id="wb-vid" muted loop playsinline autoplay preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+        <img src="images/boxigo-cover.jpg" alt="Boxigo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <video src="images/boxigo-cover.mp4" id="wb-vid" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
         <div class="wc-arrow">↗</div>
       </div>
       <div class="wc-tag">Social Media · UI/UX</div>
@@ -613,33 +614,22 @@ setInterval(updateClock,1000);updateClock();
   const card = document.getElementById('work-boxigo');
   if(!vid || !card) return;
 
-  let unlocked = false;
+  // Mobile — show thumbnail only, no video
+  if(window.innerWidth < 768){
+    vid.style.display = 'none';
+    return;
+  }
 
-  function tryPlay(){
-    vid.muted = true;
+  // Desktop — hover play/pause
+  card.addEventListener('mouseenter', () => {
     vid.play().catch(()=>{});
-  }
-
-  // Unlock on first user interaction
-  function unlock(){
-    if(unlocked) return;
-    unlocked = true;
-    tryPlay();
-  }
-  document.addEventListener('touchstart', unlock, {once:true, passive:true});
-  document.addEventListener('scroll', unlock, {once:true, passive:true});
-  document.addEventListener('click', unlock, {once:true});
-
-  // Desktop autoplay immediately
-  tryPlay();
-
-  // IntersectionObserver
-  new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ if(unlocked || window.innerWidth>=768) tryPlay(); }
-      else { vid.pause(); vid.currentTime=0; }
-    });
-  },{threshold:0.25}).observe(card);
+    vid.style.opacity = '1';
+  });
+  card.addEventListener('mouseleave', () => {
+    vid.pause();
+    vid.currentTime = 0;
+    vid.style.opacity = '0';
+  });
 })();
 
 
