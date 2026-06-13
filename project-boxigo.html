@@ -138,7 +138,7 @@ header.hide{transform:translateY(-100%)}
 .hero-media-wrap{
   width:100%;
   border-radius:20px;overflow:hidden;
-  aspect-ratio:16/7;
+  aspect-ratio:16/9;
   position:relative;
   border:1px solid var(--border);
   background:linear-gradient(135deg,rgba(77,212,168,.12) 0%,var(--bg-soft) 100%);
@@ -441,7 +441,9 @@ footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid r
     </div>
   </div>
 
-  <!-- Hero media — replace with: <img src="boxigo-hero.jpg"> or <video src="boxigo-hero.mp4" autoplay muted loop playsinline> -->
+  <!-- Hero media — replace canvas with video:
+       <video src="images/boxigo-hero.mp4" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+       (remove the canvas tag below when adding video) -->
   <div class="hero-media-wrap" id="hero-img">
     <canvas id="hero-canvas"></canvas>
   </div>
