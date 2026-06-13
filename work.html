@@ -331,21 +331,18 @@ footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid r
 <section class="work-section">
   <div class="work-grid" id="work-grid">
 
-    <a href="project-boxigo.html" class="wc" data-cat="uiux" data-hover>
-      <div class="wc-vis tint-teal">
+    <a href="project-boxigo.html" class="wc" id="work-boxigo" data-cat="uiux" data-hover>
+      <div class="wc-vis tint-teal" style="position:relative">
         <span class="wc-year">2024</span>
-        <div class="wc-mg">
-          <div class="mg-dots">
-            <div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div>
-            <div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div>
-            <div class="mg-dot-item hi"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div><div class="mg-dot-item hi"></div><div class="mg-dot-item"></div>
-          </div>
-        </div>
+        <!-- Cover image -->
+        <img src="images/boxigo-cover.jpg" id="wb-img" alt="Boxigo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:opacity .4s">
+        <!-- Cover video -->
+        <video src="images/boxigo-cover.mp4" id="wb-vid" muted loop playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none;transition:opacity .4s"></video>
         <div class="wc-arrow">↗</div>
       </div>
-      <div class="wc-tag">UI/UX Design · Product</div>
+      <div class="wc-tag">Social Media · UI/UX</div>
       <div class="wc-title">Boxigo '2024</div>
-      <div class="wc-desc">A complete structural redesign and architectural user experience system mapping client delivery flow maps.</div>
+      <div class="wc-desc">A complete social media design system and UI redesign for one of India's leading relocation platforms.</div>
     </a>
 
     <a href="#contact" class="wc" data-cat="uiux" data-hover>
@@ -578,6 +575,22 @@ document.querySelectorAll('.btn-mint,.btn-ghost').forEach(btn=>{
 /* CLOCK */
 function updateClock(){const el=document.getElementById('ft-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
 setInterval(updateClock,1000);updateClock();
+
+/* BOXIGO VIDEO */
+(function(){
+  const card=document.getElementById('work-boxigo');
+  const vid=document.getElementById('wb-vid');
+  const img=document.getElementById('wb-img');
+  if(!card||!vid) return;
+  function play(){vid.play().catch(()=>{});vid.style.opacity='.9';if(img)img.style.opacity='0'}
+  function stop(){vid.pause();vid.currentTime=0;vid.style.opacity='0';if(img)img.style.opacity='1'}
+  const isMob=()=>window.innerWidth<768;
+  card.addEventListener('mouseenter',()=>{if(!isMob())play()});
+  card.addEventListener('mouseleave',()=>{if(!isMob())stop()});
+  let unlocked=false;
+  document.addEventListener('scroll',()=>{if(!unlocked){unlocked=true;vid.muted=true;vid.play().then(()=>{vid.pause();vid.currentTime=0}).catch(()=>{})}},{once:true,passive:true});
+  new IntersectionObserver(entries=>{entries.forEach(e=>{if(!isMob())return;if(e.isIntersecting)play();else stop()})},{threshold:0.3}).observe(card);
+})();
 </script>
 </body>
 </html>
