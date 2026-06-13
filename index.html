@@ -825,9 +825,6 @@ footer{
       <!-- Card 1 — Boxigo -->
       <a href="project-boxigo.html" class="work-card card-lift" id="boxigo-card" data-hover>
         <div class="work-card-inner">
-          <!-- Cover image — shows by default -->
-          <img src="images/boxigo-cover.jpg" class="wc-media-img" alt="Boxigo Social Media Design" id="boxigo-img">
-          <!-- Cover video — plays on hover (desktop) / scroll into view (mobile) -->
           <video
             src="images/boxigo-cover.mp4"
             class="wc-media-vid"
@@ -836,7 +833,7 @@ footer{
             loop
             playsinline
             preload="none"
-            style="opacity:0;transition:opacity .4s"
+            style="opacity:.85;transition:opacity .4s;pointer-events:none"
           ></video>
           <div class="wc-arrow">↗</div>
         </div>
@@ -1284,40 +1281,23 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   a.addEventListener('mouseleave', () => gsap.to(a.querySelector('.arr-r'),{x:0,duration:.4,ease:'elastic.out(1,.4)'}));
 });
 
-/* ── BOXIGO VIDEO — hover (desktop) + scroll into view (mobile) ── */
+/* ── BOXIGO VIDEO — scroll into view = play, scroll away = pause ── */
 (function(){
-  const card = document.getElementById('boxigo-card');
-  const vid  = document.getElementById('boxigo-vid');
-  const img  = document.getElementById('boxigo-img');
-  if(!card || !vid) return;
+  const vid = document.getElementById('boxigo-vid');
+  if(!vid) return;
 
-  function playVideo(){
-    vid.play().catch(()=>{});
-    vid.style.opacity = '0.8';
-    if(img) img.style.opacity = '0';
-  }
-  function stopVideo(){
-    vid.pause();
-    vid.currentTime = 0;
-    vid.style.opacity = '0';
-    if(img) img.style.opacity = '1';
-  }
-
-  const isMobile = () => window.innerWidth < 768;
-
-  // Desktop — hover
-  card.addEventListener('mouseenter', () => { if(!isMobile()) playVideo(); });
-  card.addEventListener('mouseleave', () => { if(!isMobile()) stopVideo(); });
-
-  // Mobile — scroll into view (60% visible = play)
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if(!isMobile()) return;
-      if(e.isIntersecting && e.intersectionRatio >= 0.6) playVideo();
-      else stopVideo();
+      if(e.isIntersecting && e.intersectionRatio >= 0.5){
+        vid.play().catch(()=>{});
+      } else {
+        vid.pause();
+        vid.currentTime = 0;
+      }
     });
-  }, { threshold: 0.6 });
-  observer.observe(card);
+  }, { threshold: 0.5 });
+
+  observer.observe(document.getElementById('boxigo-card'));
 })();
 </script>
 </body>
