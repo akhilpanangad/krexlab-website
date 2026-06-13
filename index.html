@@ -1288,14 +1288,14 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if(e.isIntersecting && e.intersectionRatio >= 0.5){
+      if(e.isIntersecting){
         vid.play().catch(()=>{});
       } else {
         vid.pause();
         vid.currentTime = 0;
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.3 });
 
   observer.observe(document.getElementById('boxigo-card'));
 })();
