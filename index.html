@@ -1283,14 +1283,26 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   a.addEventListener('mouseleave', () => gsap.to(a.querySelector('.arr-r'),{x:0,duration:.4,ease:'elastic.out(1,.4)'}));
 });
 
-/* ── BOXIGO VIDEO — image first, crossfade to video on scroll ── */
+/* ── BOXIGO VIDEO — image first, video on scroll/hover ── */
 (function(){
   const vid = document.getElementById('boxigo-vid');
   const img = document.getElementById('boxigo-img');
   const card = document.getElementById('boxigo-card');
   if(!vid || !card) return;
 
+  // Unlock video on first any user interaction on page
+  let unlocked = false;
+  function unlock(){
+    if(unlocked) return;
+    unlocked = true;
+    vid.muted = true;
+    vid.play().then(()=>{ vid.pause(); vid.currentTime = 0; }).catch(()=>{});
+  }
+  document.addEventListener('touchstart', unlock, { once:true, passive:true });
+  document.addEventListener('scroll', unlock, { once:true, passive:true });
+
   function playVideo(){
+    vid.muted = true;
     vid.play().catch(()=>{});
     vid.style.opacity = '0.9';
     if(img) img.style.opacity = '0';
@@ -1302,18 +1314,19 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
     if(img) img.style.opacity = '1';
   }
 
-  // Desktop — hover
-  card.addEventListener('mouseenter', () => { if(window.innerWidth >= 768) playVideo(); });
-  card.addEventListener('mouseleave', () => { if(window.innerWidth >= 768) stopVideo(); });
+  const isMobile = () => window.innerWidth < 768;
 
-  // Mobile — scroll into view
+  // Desktop — hover
+  card.addEventListener('mouseenter', () => { if(!isMobile()) playVideo(); });
+  card.addEventListener('mouseleave', () => { if(!isMobile()) stopVideo(); });
+
+  // All screens — IntersectionObserver
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if(window.innerWidth >= 768) return;
       if(e.isIntersecting) playVideo();
       else stopVideo();
     });
-  }, { threshold: 0.25 });
+  }, { threshold: 0.3 });
   observer.observe(card);
 })();
 </script>
