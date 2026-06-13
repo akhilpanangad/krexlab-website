@@ -832,7 +832,8 @@ footer{
             muted
             loop
             playsinline
-            preload="none"
+            autoplay
+            preload="metadata"
             style="opacity:.85;transition:opacity .4s;pointer-events:none"
           ></video>
           <div class="wc-arrow">↗</div>
@@ -1281,11 +1282,15 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   a.addEventListener('mouseleave', () => gsap.to(a.querySelector('.arr-r'),{x:0,duration:.4,ease:'elastic.out(1,.4)'}));
 });
 
-/* ── BOXIGO VIDEO — scroll into view = play, scroll away = pause ── */
+/* ── BOXIGO VIDEO — autoplay + scroll trigger ── */
 (function(){
   const vid = document.getElementById('boxigo-vid');
   if(!vid) return;
 
+  // Try play immediately (works on desktop)
+  vid.play().catch(()=>{});
+
+  // Scroll observer for mobile
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if(e.isIntersecting){
@@ -1295,7 +1300,7 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
         vid.currentTime = 0;
       }
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.2 });
 
   observer.observe(document.getElementById('boxigo-card'));
 })();
