@@ -368,10 +368,7 @@ footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid r
     <a href="project-boxigo.html" class="wc" id="work-boxigo" data-cat="uiux" data-hover>
       <div class="wc-vis tint-teal" style="position:relative">
         <span class="wc-year">2024</span>
-        <!-- Cover image -->
-        <img loading="lazy" src="images/boxigo-cover.jpg" id="wb-img" alt="Boxigo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:opacity .4s">
-        <!-- Cover video -->
-        <video src="images/boxigo-cover.mp4" id="wb-vid" muted loop playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none;transition:opacity .4s"></video>
+        <video src="images/boxigo-cover.mp4" id="wb-vid" muted loop playsinline autoplay preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
         <div class="wc-arrow">↗</div>
       </div>
       <div class="wc-tag">Social Media · UI/UX</div>
@@ -612,18 +609,17 @@ setInterval(updateClock,1000);updateClock();
 
 /* BOXIGO VIDEO */
 (function(){
-  const card=document.getElementById('work-boxigo');
-  const vid=document.getElementById('wb-vid');
-  const img=document.getElementById('wb-img');
-  if(!card||!vid) return;
-  function play(){vid.play().catch(()=>{});vid.style.opacity='.9';if(img)img.style.opacity='0'}
-  function stop(){vid.pause();vid.currentTime=0;vid.style.opacity='0';if(img)img.style.opacity='1'}
-  const isMob=()=>window.innerWidth<768;
-  card.addEventListener('mouseenter',()=>{if(!isMob())play()});
-  card.addEventListener('mouseleave',()=>{if(!isMob())stop()});
-  let unlocked=false;
-  document.addEventListener('scroll',()=>{if(!unlocked){unlocked=true;vid.muted=true;vid.play().then(()=>{vid.pause();vid.currentTime=0}).catch(()=>{})}},{once:true,passive:true});
-  new IntersectionObserver(entries=>{entries.forEach(e=>{if(!isMob())return;if(e.isIntersecting)play();else stop()})},{threshold:0.3}).observe(card);
+  const vid = document.getElementById('wb-vid');
+  if(!vid) return;
+  // Try autoplay
+  vid.play().catch(()=>{});
+  // Intersection observer — play when visible, pause when not
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) vid.play().catch(()=>{});
+      else { vid.pause(); vid.currentTime=0; }
+    });
+  },{threshold:0.3}).observe(document.getElementById('work-boxigo'));
 })();
 
 
