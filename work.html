@@ -610,16 +610,36 @@ setInterval(updateClock,1000);updateClock();
 /* BOXIGO VIDEO */
 (function(){
   const vid = document.getElementById('wb-vid');
-  if(!vid) return;
-  // Try autoplay
-  vid.play().catch(()=>{});
-  // Intersection observer — play when visible, pause when not
+  const card = document.getElementById('work-boxigo');
+  if(!vid || !card) return;
+
+  let unlocked = false;
+
+  function tryPlay(){
+    vid.muted = true;
+    vid.play().catch(()=>{});
+  }
+
+  // Unlock on first user interaction
+  function unlock(){
+    if(unlocked) return;
+    unlocked = true;
+    tryPlay();
+  }
+  document.addEventListener('touchstart', unlock, {once:true, passive:true});
+  document.addEventListener('scroll', unlock, {once:true, passive:true});
+  document.addEventListener('click', unlock, {once:true});
+
+  // Desktop autoplay immediately
+  tryPlay();
+
+  // IntersectionObserver
   new IntersectionObserver(entries=>{
     entries.forEach(e=>{
-      if(e.isIntersecting) vid.play().catch(()=>{});
+      if(e.isIntersecting){ if(unlocked || window.innerWidth>=768) tryPlay(); }
       else { vid.pause(); vid.currentTime=0; }
     });
-  },{threshold:0.3}).observe(document.getElementById('work-boxigo'));
+  },{threshold:0.25}).observe(card);
 })();
 
 
