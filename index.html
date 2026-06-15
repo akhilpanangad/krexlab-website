@@ -1389,6 +1389,30 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   });
 })();
 
+/* ── GOVIAGGO VIDEO ── */
+(function(){
+  const vid = document.getElementById('goviaggo-vid');
+  const img = document.getElementById('goviaggo-img');
+  const card = document.getElementById('goviaggo-card');
+  if(!vid || !card) return;
+  let unlocked = false;
+  function unlock(){
+    if(unlocked) return; unlocked = true;
+    vid.muted = true;
+    vid.play().then(()=>{ vid.pause(); vid.currentTime=0; }).catch(()=>{});
+  }
+  document.addEventListener('touchstart', unlock, {once:true, passive:true});
+  document.addEventListener('scroll', unlock, {once:true, passive:true});
+  function playVideo(){ vid.muted=true; vid.play().catch(()=>{}); vid.style.opacity='.9'; if(img) img.style.opacity='0'; }
+  function stopVideo(){ vid.pause(); vid.currentTime=0; vid.style.opacity='0'; if(img) img.style.opacity='1'; }
+  const isMob = () => window.innerWidth < 768;
+  card.addEventListener('mouseenter', ()=>{ if(!isMob()) playVideo(); });
+  card.addEventListener('mouseleave', ()=>{ if(!isMob()) stopVideo(); });
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(!isMob()) return; if(e.isIntersecting) playVideo(); else stopVideo(); });
+  },{threshold:0.3}).observe(card);
+})();
+
 </script>
 </body>
 </html>
