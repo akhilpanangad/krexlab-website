@@ -473,7 +473,7 @@ body::before{
   background:linear-gradient(135deg,rgba(255,255,255,.028) 0%,rgba(255,255,255,.01) 100%);
   position:relative;overflow:hidden;
   transition:border-color .4s;
-  opacity:0;transform:translateY(40px);
+  opacity:1;transform:translateY(0);
   display:flex;flex-direction:column;gap:14px;
 }
 .svc-item:hover{border-color:rgba(77,212,168,.35)}
@@ -860,7 +860,7 @@ footer{
       <a href="project-boxigo.html" class="work-card card-lift" id="boxigo-card" data-hover>
         <div class="work-card-inner" style="position:relative">
           <!-- Cover image — visible by default -->
-          <img loading="lazy" src="images/boxigo-cover.jpg" id="boxigo-img" alt="Boxigo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
+          <img src="images/boxigo-cover.jpg" id="boxigo-img" alt="Boxigo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
           <!-- Video — hidden by default, plays on scroll -->
           <video
             src="images/boxigo-cover.mp4"
@@ -885,7 +885,7 @@ footer{
       <!-- Card 2 — Goviaggo -->
       <a href="project-goviaggo.html" class="work-card card-lift" data-hover>
         <div class="work-card-inner">
-          <img loading="lazy" src="images/goviaggo-cover.webp" alt="Goviaggo Brand Identity" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+          <img src="images/goviaggo-cover.webp" alt="Goviaggo Brand Identity" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
           <div class="wc-arrow">↗</div>
         </div>
         <div class="wc-info">
