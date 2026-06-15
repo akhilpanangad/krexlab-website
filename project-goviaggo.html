@@ -95,9 +95,9 @@ header.hide{transform:translateY(-100%)}
 
 /* PROJECT HERO */
 .proj-hero{padding:22vh 5vw 6vh;position:relative;z-index:10;max-width:1600px;margin:0 auto}
-.proj-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px;opacity:0;transform:translateY(16px)}
+.proj-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px;opacity:1}
 .proj-h1{font-family:'Outfit',sans-serif;font-weight:300;font-size:clamp(3rem,7vw,9vw);line-height:.95;letter-spacing:-.04em;margin-bottom:32px}
-.proj-meta{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:6vh;opacity:0;transform:translateY(16px)}
+.proj-meta{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:6vh;opacity:1}
 .pm-item{padding:20px 32px 20px 0;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;min-width:140px}
 .pm-item:last-child{border-right:none;padding-right:0}
 .pm-item:not(:first-child){padding-left:32px}
@@ -149,7 +149,7 @@ header.hide{transform:translateY(-100%)}
 .ns-h2{font-family:'Outfit',sans-serif;font-weight:300;font-size:clamp(1.8rem,3vw,3.5rem);letter-spacing:-.04em}
 .ns-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:600px){.ns-grid{grid-template-columns:1fr}}
-.ns-card{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:16px;opacity:0;transform:translateY(30px)}
+.ns-card{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:16px;opacity:1}
 .ns-vis{aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:1px solid var(--border);position:relative;transition:border-color .4s}
 .ns-card:hover .ns-vis{border-color:rgba(77,212,168,.3)}
 .ns-vis-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(77,212,168,.2)}
@@ -437,10 +437,7 @@ window.addEventListener('load',()=>{
     .to('.proj-meta',{y:0,opacity:1,duration:.8},'-=.4')
     .to('#hero-img',{opacity:1,duration:1,ease:'power2.out'},'-=.3');
 
-  gsap.utils.toArray('.pg-cell').forEach((c,i)=>{
-    gsap.to(c,{y:0,opacity:1,duration:.9,ease:'power3.out',delay:(i%3)*.07,
-      scrollTrigger:{trigger:c,start:'top 88%'}});
-  });
+
 
   gsap.utils.toArray('.ns-card').forEach((c,i)=>{
     gsap.to(c,{y:0,opacity:1,duration:.9,ease:'power3.out',delay:i*.12,
