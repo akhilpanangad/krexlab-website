@@ -377,10 +377,11 @@ footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid r
     </a>
 
 
-    <a href="project-goviaggo.html" class="wc" data-cat="branding" data-hover>
+    <a href="project-goviaggo.html" class="wc" id="goviaggo-card" data-cat="branding" data-hover>
       <div class="wc-vis tint-blue" style="position:relative">
         <span class="wc-year">2025</span>
-        <img src="images/goviaggo-cover.webp" alt="Goviaggo Brand Identity" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+        <img src="images/goviaggo-cover.webp" id="gv-img" alt="Goviaggo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;transition:opacity .4s">
+        <video src="images/goviaggo-cover.mp4" id="gv-vid" muted loop playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
         <div class="wc-arrow">↗</div>
       </div>
       <div class="wc-tag">Branding · Brand Guidelines</div>
@@ -614,6 +615,31 @@ document.querySelectorAll('.btn-mint,.btn-ghost').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.28,y:(e.clientY-r.top-r.height/2)*.28,duration:.3,ease:'power2.out'})});
   btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
 });
+
+
+/* GOVIAGGO VIDEO */
+(function(){
+  const vid = document.getElementById('gv-vid');
+  const img = document.getElementById('gv-img');
+  const card = document.getElementById('goviaggo-card');
+  if(!vid || !card) return;
+  let unlocked = false;
+  function unlock(){
+    if(unlocked) return; unlocked = true;
+    vid.muted = true;
+    vid.play().then(()=>{ vid.pause(); vid.currentTime=0; }).catch(()=>{});
+  }
+  document.addEventListener('touchstart', unlock, {once:true, passive:true});
+  document.addEventListener('scroll', unlock, {once:true, passive:true});
+  function playVideo(){ vid.play().catch(()=>{}); vid.style.opacity='.9'; if(img) img.style.opacity='0'; }
+  function stopVideo(){ vid.pause(); vid.currentTime=0; vid.style.opacity='0'; if(img) img.style.opacity='1'; }
+  const isMob = () => window.innerWidth < 768;
+  card.addEventListener('mouseenter', ()=>{ if(!isMob()) playVideo(); });
+  card.addEventListener('mouseleave', ()=>{ if(!isMob()) stopVideo(); });
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(!isMob()) return; if(e.isIntersecting) playVideo(); else stopVideo(); });
+  },{threshold:0.3}).observe(card);
+})();
 
 /* CLOCK */
 function updateClock(){const el=document.getElementById('ft-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
