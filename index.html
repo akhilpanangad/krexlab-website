@@ -914,25 +914,20 @@ footer{
         <p class="wc-desc">Vibrant social media design system for a sports and fitness booking app — turf, workout and games.</p>
       </a>
 
-      <!-- Card 4 -->
-      <a href="work.html" class="work-card card-lift" data-hover>
-        <div class="work-card-inner">
-          <!-- IMAGE: <img loading="lazy" src="images/work-4.jpg" class="wc-media-img" alt="Vanguard Studios"> -->
-          <div class="wc-visual vis-rings">
-            <div class="rr rr1"></div>
-            <div class="rr rr2"></div>
-            <div class="rr rr3"></div>
-            <div class="dot-c"></div>
-          </div>
+      <!-- Card 4 — Sastra -->
+      <a href="project-sastra.html" class="work-card card-lift" id="sastra-card" data-hover>
+        <div class="work-card-inner" style="position:relative">
+          <img src="images/sastra-cover.webp" id="sastra-img" alt="Sastra" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
+          <video src="images/sastra-cover.mp4" id="sastra-vid" muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
           <div class="wc-arrow">↗</div>
         </div>
         <div class="wc-info">
           <div>
-            <p class="wc-tag">Branding · Art Direction</p>
-            <h3 class="wc-title">Vanguard Studios</h3>
+            <p class="wc-tag">Digital Marketing · AI Video</p>
+            <h3 class="wc-title">Sastra</h3>
           </div>
         </div>
-        <p class="wc-desc">A high-contrast visual identity and minimalist design system for a premium independent film production house.</p>
+        <p class="wc-desc">Social media management, AI video generation and digital marketing for a science tuition centre in Balussery.</p>
       </a>
     </div>
 
@@ -1431,6 +1426,24 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   new IntersectionObserver(entries=>{
     entries.forEach(e=>{ if(!isMob()) return; if(e.isIntersecting) playVideo(); else stopVideo(); });
   },{threshold:0.3}).observe(card);
+})();
+
+/* ── SASTRA VIDEO ── */
+(function(){
+  const vid = document.getElementById('sastra-vid');
+  const img = document.getElementById('sastra-img');
+  const card = document.getElementById('sastra-card');
+  if(!vid || !card) return;
+  let unlocked = false;
+  function unlock(){if(unlocked)return;unlocked=true;vid.muted=true;vid.play().then(()=>{vid.pause();vid.currentTime=0}).catch(()=>{})}
+  document.addEventListener('touchstart',unlock,{once:true,passive:true});
+  document.addEventListener('scroll',unlock,{once:true,passive:true});
+  function playVideo(){vid.muted=true;vid.play().catch(()=>{});vid.style.opacity='.9';if(img)img.style.opacity='0'}
+  function stopVideo(){vid.pause();vid.currentTime=0;vid.style.opacity='0';if(img)img.style.opacity='1'}
+  const isMob=()=>window.innerWidth<768;
+  card.addEventListener('mouseenter',()=>{if(!isMob())playVideo()});
+  card.addEventListener('mouseleave',()=>{if(!isMob())stopVideo()});
+  new IntersectionObserver(entries=>{entries.forEach(e=>{if(!isMob())return;if(e.isIntersecting)playVideo();else stopVideo()})},{threshold:0.3}).observe(card);
 })();
 
 </script>
