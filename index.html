@@ -899,9 +899,10 @@ footer{
       </a>
 
       <!-- Card 3 — Playspots -->
-      <a href="project-playspots.html" class="work-card card-lift" data-hover>
-        <div class="work-card-inner">
-          <img src="images/playspots-cover.webp" alt="Playspots Social Media Design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none">
+      <a href="project-playspots.html" class="work-card card-lift" id="playspots-card" data-hover>
+        <div class="work-card-inner" style="position:relative">
+          <img src="images/playspots-cover.webp" id="playspots-img" alt="Playspots" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
+          <video src="images/playspots-cover.mp4" id="playspots-vid" muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
           <div class="wc-arrow">↗</div>
         </div>
         <div class="wc-info">
@@ -1390,6 +1391,29 @@ document.querySelectorAll('.view-all-wrap a').forEach(a => {
   const vid = document.getElementById('goviaggo-vid');
   const img = document.getElementById('goviaggo-img');
   const card = document.getElementById('goviaggo-card');
+  if(!vid || !card) return;
+  let unlocked = false;
+  function unlock(){
+    if(unlocked) return; unlocked = true;
+    vid.muted = true;
+    vid.play().then(()=>{ vid.pause(); vid.currentTime=0; }).catch(()=>{});
+  }
+  document.addEventListener('touchstart', unlock, {once:true, passive:true});
+  document.addEventListener('scroll', unlock, {once:true, passive:true});
+  function playVideo(){ vid.muted=true; vid.play().catch(()=>{}); vid.style.opacity='.9'; if(img) img.style.opacity='0'; }
+  function stopVideo(){ vid.pause(); vid.currentTime=0; vid.style.opacity='0'; if(img) img.style.opacity='1'; }
+  const isMob = () => window.innerWidth < 768;
+  card.addEventListener('mouseenter', ()=>{ if(!isMob()) playVideo(); });
+  card.addEventListener('mouseleave', ()=>{ if(!isMob()) stopVideo(); });
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(!isMob()) return; if(e.isIntersecting) playVideo(); else stopVideo(); });
+  },{threshold:0.3}).observe(card);
+})();
+/* ── PLAYSPOTS VIDEO ── */
+(function(){
+  const vid = document.getElementById('playspots-vid');
+  const img = document.getElementById('playspots-img');
+  const card = document.getElementById('playspots-card');
   if(!vid || !card) return;
   let unlocked = false;
   function unlock(){
