@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tigris Valley — Website Design & UI/UX · Krexlab</title>
+<meta name="description" content="Website design and UI/UX for Tigris Valley — a luxury Ayurvedic and holistic wellness retreat in Kozhikode, Kerala.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root{--mint:#4dd4a8;--bg:#07181f;--bg-soft:#0c2530;--ink:#f4f7f6;--muted:#8ba2ab;--border:rgba(255,255,255,.06)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;cursor:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:96px 96px}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.04;background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+::-webkit-scrollbar{width:0}
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--mint);border-radius:9999px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid rgba(77,212,168,.55);border-radius:9999px;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s cubic-bezier(.2,.8,.2,1),height .3s,border-color .3s,background .3s}
+.cursor-ring.is-hover{width:72px;height:72px;background:rgba(77,212,168,.08);border-color:rgba(77,212,168,.8)}
+@media(max-width:768px){.cursor-dot,.cursor-ring{display:none}body{cursor:auto}}
+#particle-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:.4}
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 20%,rgba(77,212,168,.06) 0%,transparent 60%)}
+header{position:fixed;top:0;inset-inline:0;z-index:50;padding:20px 5vw;display:flex;align-items:center;justify-content:space-between;transition:padding .5s,background .5s,border-color .5s,transform .55s;border-bottom:1px solid transparent}
+header.scrolled{padding:12px 5vw;background:rgba(7,24,31,.7);backdrop-filter:blur(20px);border-color:rgba(255,255,255,.05)}
+header.hide{transform:translateY(-100%)}
+.nav-logo img{height:24px;width:auto}
+.nav-links{display:flex;align-items:center;gap:2vw}
+.nav-links a{font-size:.82rem;color:rgba(255,255,255,.7);text-decoration:none;transition:color .3s}
+.nav-links a:hover{color:var(--mint)}
+.nav-back{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .3s}
+.nav-back:hover{color:var(--mint)}
+.nav-back i{font-size:.7rem}
+.nav-cta{padding:9px 20px;border-radius:9999px;background:var(--mint);color:#07181f!important;font-weight:500!important;transition:background .3s!important}
+.nav-cta:hover{background:#fff!important}
+.nav-mob-btn{display:none;width:40px;height:40px;border-radius:9999px;background:var(--mint);color:#07181f;align-items:center;justify-content:center;border:none;cursor:pointer;flex-direction:column;gap:3px}
+.mob-line{display:block;width:16px;height:2px;background:#07181f}
+@media(max-width:768px){.nav-links{display:none}.nav-mob-btn{display:flex}}
+#mob-overlay{position:fixed;inset:0;z-index:59;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .5s}
+#mob-overlay.show{opacity:1;pointer-events:all}
+#mob-menu{position:fixed;top:0;right:0;bottom:0;width:min(320px,85vw);z-index:60;background:#0a1e28;border-left:1px solid rgba(255,255,255,.07);transform:translateX(100%);transition:transform .6s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;padding:28px 28px 32px}
+#mob-menu.open{transform:translateX(0)}
+.mob-close-btn{width:38px;height:38px;border-radius:9999px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:border-color .3s,color .3s;margin-left:auto}
+.mob-close-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.mob-logo img{height:20px;opacity:.7}
+.mob-nav{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center}
+.mob-nav a{font-size:clamp(1.6rem,6vw,2.2rem);font-weight:300;letter-spacing:-.03em;color:rgba(255,255,255,.55);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;opacity:0;transform:translateX(24px);transition:color .3s}
+.mob-nav a:last-child{border-bottom:none}
+.mob-nav a:hover{color:var(--mint)}
+.mob-nav a .arr{font-size:.9rem;color:rgba(255,255,255,.2)}
+.mob-nav a.mob-cta{color:var(--mint);font-family:'Instrument Serif',serif;font-style:italic}
+.mob-bottom{display:flex;flex-direction:column;gap:18px}
+.mob-soc-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.mob-socials{display:flex;gap:10px}
+.mob-soc-btn{width:36px;height:36px;border-radius:9999px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);text-decoration:none;font-size:.85rem;transition:border-color .3s,color .3s}
+.mob-soc-btn:hover{border-color:var(--mint);color:var(--mint)}
+.mob-foot{display:flex;justify-content:space-between;font-size:.7rem;color:rgba(255,255,255,.25);padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
+.mob-foot a{color:rgba(255,255,255,.25);text-decoration:none}
+.page{position:relative;z-index:2}
+.chip{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .9rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,247,246,.75);border:1px solid rgba(255,255,255,.08);border-radius:9999px;background:rgba(255,255,255,.02);backdrop-filter:blur(6px)}
+.chip-dot{width:6px;height:6px;border-radius:9999px;background:var(--mint);box-shadow:0 0 12px var(--mint);flex-shrink:0}
+.serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+.text-stroke{-webkit-text-stroke:1px rgba(244,247,246,.35);color:transparent}
+.reveal-mask{display:inline-block;overflow:hidden;vertical-align:bottom}
+.reveal-mask>span{display:inline-block;transform:translateY(110%)}
+.btn-mint{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:9999px;background:var(--mint);color:#07181f;font-weight:500;font-size:.85rem;text-decoration:none;transition:background .35s,transform .3s}
+.btn-mint:hover{background:#fff;transform:translateY(-2px)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);color:#fff;font-size:.85rem;text-decoration:none;transition:border-color .3s,color .3s}
+.btn-ghost:hover{border-color:var(--mint);color:var(--mint)}
+@keyframes pulse-ring{0%{transform:scale(.8);opacity:.8}80%,100%{transform:scale(2.2);opacity:0}}
+#page-loader{position:fixed;inset:0;z-index:99999;background:#07181f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;transition:opacity .6s ease,visibility .6s ease}
+#page-loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{height:28px;width:auto;opacity:0;animation:loaderFadeIn .6s ease .2s forwards}
+.loader-bar-wrap{width:160px;height:1px;background:rgba(255,255,255,.08);border-radius:100px;overflow:hidden}
+.loader-bar{height:100%;width:0;background:linear-gradient(90deg,var(--mint),rgba(77,212,168,.5));border-radius:100px;animation:loaderProgress 1.2s cubic-bezier(.25,1,.5,1) .3s forwards}
+.loader-dots{display:flex;gap:6px}
+.loader-dot{width:4px;height:4px;border-radius:50%;background:rgba(77,212,168,.4);animation:loaderDot 1.2s ease-in-out infinite}
+.loader-dot:nth-child(2){animation-delay:.2s}
+.loader-dot:nth-child(3){animation-delay:.4s}
+@keyframes loaderFadeIn{to{opacity:1}}
+@keyframes loaderProgress{to{width:100%}}
+@keyframes loaderDot{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1);opacity:1}}
+.proj-hero{padding:22vh 5vw 6vh;position:relative;z-index:10;max-width:1600px;margin:0 auto}
+.proj-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:28px;opacity:0;transform:translateY(16px)}
+.proj-h1{font-family:'Outfit',sans-serif;font-weight:300;font-size:clamp(3rem,7vw,9vw);line-height:.95;letter-spacing:-.04em;margin-bottom:32px}
+.proj-meta{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:6vh;opacity:0;transform:translateY(16px)}
+.pm-item{padding:20px 32px 20px 0;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px;min-width:140px}
+.pm-item:last-child{border-right:none;padding-right:0}
+.pm-item:not(:first-child){padding-left:32px}
+.pm-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.pm-val{font-size:.9rem;font-weight:400}
+.hero-media-wrap{width:100%;border-radius:20px;overflow:hidden;aspect-ratio:16/9;position:relative;border:1px solid var(--border);background:var(--bg-soft);opacity:1}
+.hero-media-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.proj-content{padding:6vw 5vw;position:relative;z-index:10;border-top:1px solid var(--border)}
+.pc-inner{max-width:1600px;margin:0 auto}
+.pc-overview{display:grid;grid-template-columns:1fr 1fr;gap:8vw;margin-bottom:6vw;align-items:start}
+@media(max-width:768px){.pc-overview{grid-template-columns:1fr;gap:3vw}}
+.pc-overview-text h2{font-family:'Outfit',sans-serif;font-weight:300;font-size:clamp(1.8rem,3vw,3.2rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:20px}
+.pc-overview-text p{font-size:.95rem;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:16px}
+.pc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.pc-tag{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:9999px;border:1px solid rgba(77,212,168,.25);color:rgba(77,212,168,.75);background:rgba(77,212,168,.05)}
+.pc-deliverables h3{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;font-weight:500}
+.pc-del-list{display:flex;flex-direction:column;gap:0}
+.pc-del-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);font-size:.88rem;font-weight:300}
+.pc-del-item:last-child{border-bottom:none}
+.pc-del-item i{color:var(--mint);font-size:.7rem}
+.proj-grid{padding:0 5vw 6vw;position:relative;z-index:10}
+.pg-inner{max-width:1600px;margin:0 auto}
+.pg-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:2vw;display:flex;align-items:center;gap:8px}
+.pg-label::before{content:'';width:20px;height:1px;background:var(--mint)}
+.pg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pg-grid.three{grid-template-columns:repeat(3,1fr)}
+@media(max-width:768px){.pg-grid{grid-template-columns:1fr}.pg-grid.three{grid-template-columns:1fr}}
+.pg-cell{border-radius:16px;overflow:hidden;background:var(--bg-soft);border:1px solid var(--border);position:relative;opacity:1;transition:border-color .4s}
+.pg-cell:hover{border-color:rgba(77,212,168,.3)}
+.pg-cell.sq{aspect-ratio:1/1}
+.pg-cell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.pg-cell:hover img{transform:scale(1.03)}
+.pg-caption{display:none}
+.next-section{padding:6vw 5vw 8vw;border-top:1px solid var(--border);position:relative;z-index:10}
+.ns-inner{max-width:1600px;margin:0 auto}
+.ns-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3vw;flex-wrap:wrap;gap:12px}
+.ns-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.ns-h2{font-family:'Outfit',sans-serif;font-weight:300;font-size:clamp(1.8rem,3vw,3.5rem);letter-spacing:-.04em}
+.ns-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:600px){.ns-grid{grid-template-columns:1fr}}
+.ns-card{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:16px;opacity:0;transform:translateY(30px)}
+.ns-vis{aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:1px solid var(--border);position:relative;transition:border-color .4s}
+.ns-card:hover .ns-vis{border-color:rgba(77,212,168,.3)}
+.ns-vis img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.ns-card:hover .ns-vis img{transform:scale(1.04)}
+.ns-vis-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(77,212,168,.2)}
+.ns-arrow{position:absolute;bottom:16px;right:16px;width:38px;height:38px;border-radius:9999px;border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .4s}
+.ns-card:hover .ns-arrow{background:var(--mint);border-color:var(--mint);color:#07181f;transform:rotate(45deg)}
+.ns-tag{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mint);font-weight:500}
+.ns-title{font-size:clamp(1.2rem,1.8vw,2rem);font-weight:300;letter-spacing:-.03em;transition:color .3s}
+.ns-card:hover .ns-title{color:var(--mint)}
+footer{position:relative;z-index:10;padding:60px 5vw 32px;border-top:1px solid rgba(255,255,255,.05)}
+.ft-inner{max-width:1600px;margin:0 auto}
+.ft-cta{display:flex;flex-direction:column;align-items:center;text-align:center}
+.ft-h2{font-weight:300;line-height:.95;letter-spacing:-.04em;font-size:clamp(3rem,8vw,9rem);margin-top:24px;margin-bottom:40px}
+.ft-h2 .serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
+.ft-btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
+@media(min-width:640px){.ft-btns{flex-wrap:nowrap}}
+.ft-bar{margin-top:64px;padding-top:24px;border-top:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;gap:20px;align-items:center}
+@media(min-width:768px){.ft-bar{flex-direction:row;justify-content:space-between}}
+.ft-copy{font-size:.75rem;color:rgba(255,255,255,.4)}
+.ft-clock{display:flex;align-items:center;gap:6px;font-size:.75rem;color:rgba(255,255,255,.5)}
+.ft-clock-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:pulse-ring 2.4s ease-in-out infinite}
+.ft-socials{display:flex;gap:10px}
+.ft-soc-btn{width:38px;height:38px;border-radius:9999px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7);text-decoration:none;font-size:.9rem;transition:color .3s,border-color .3s}
+.ft-soc-btn:hover{color:var(--mint);border-color:var(--mint)}
+.ft-brand{margin-top:40px;text-align:center;overflow:hidden;font-size:28vw;line-height:1;font-weight:300;letter-spacing:-.05em;-webkit-text-stroke:1px rgba(244,247,246,.06);color:transparent;user-select:none}
+@media(max-width:768px){.proj-hero{padding:18vh 5vw 5vh}.pm-item{min-width:100px;padding:14px 16px 14px 0}.pm-item:not(:first-child){padding-left:16px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="page-loader">
+  <img src="logo.svg" class="loader-logo" alt="Krexlab">
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-dots"><div class="loader-dot"></div><div class="loader-dot"></div><div class="loader-dot"></div></div>
+</div>
+
+<div class="cursor-ring" id="cursor-ring"></div>
+<div class="cursor-dot" id="cursor-dot"></div>
+<canvas id="particle-canvas"></canvas>
+<div class="ambient"></div>
+<div id="mob-overlay"></div>
+
+<div id="mob-menu">
+  <div class="mob-top">
+    <a href="index.html" class="mob-logo"><img src="logo.svg" alt="Krexlab"></a>
+    <button class="mob-close-btn" id="mob-close">✕</button>
+  </div>
+  <nav class="mob-nav">
+    <a href="work.html" class="mob-link" data-hover>Work <span class="arr">↗</span></a>
+    <a href="services.html" class="mob-link" data-hover>Services <span class="arr">↗</span></a>
+    <a href="contact.html" class="mob-link mob-cta" data-hover>Start a project <span class="arr">↗</span></a>
+  </nav>
+  <div class="mob-bottom">
+    <div class="mob-soc-label">Follow us</div>
+    <div class="mob-socials">
+      <a href="https://instagram.com/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://linkedin.com/company/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="https://behance.net/krexlab" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-behance"></i></a>
+      <a href="https://wa.me/917907590856" target="_blank" class="mob-soc-btn"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+    <div class="mob-foot">
+      <a href="mailto:hello@krexlab.in">hello@krexlab.in</a>
+      <span>© 2026 Krexlab</span>
+    </div>
+  </div>
+</div>
+
+<header id="main-header">
+  <a href="index.html" class="nav-logo" data-hover><img src="logo.svg" alt="Krexlab"></a>
+  <div class="nav-links">
+    <a href="work.html" class="nav-back" data-hover><i class="fa-solid fa-arrow-left"></i> All Work</a>
+    <a href="services.html" data-hover>Services</a>
+    <a href="contact.html" class="nav-cta" data-hover>Start a project</a>
+  </div>
+  <button class="nav-mob-btn" id="mob-btn" aria-label="Menu">
+    <span class="mob-line"></span><span class="mob-line"></span>
+  </button>
+</header>
+
+<div class="page">
+
+<!-- HERO -->
+<div class="proj-hero">
+  <div class="proj-eyebrow">
+    <span class="chip"><span class="chip-dot"></span>Website Design · UI/UX</span>
+    <span style="font-size:.72rem;color:var(--muted)">2022</span>
+  </div>
+  <h1 class="proj-h1">
+    <span class="reveal-mask" style="display:block"><span>Tigris Valley —</span></span>
+    <span class="reveal-mask" style="display:block"><span>Where <em class="serif-italic">healing</em></span></span>
+    <span class="reveal-mask" style="display:block"><span class="text-stroke">finds you.</span></span>
+  </h1>
+  <div class="proj-meta">
+    <div class="pm-item"><div class="pm-label">Client</div><div class="pm-val">Tigris Valley</div></div>
+    <div class="pm-item"><div class="pm-label">Website</div><div class="pm-val">tigrisvalley.com</div></div>
+    <div class="pm-item"><div class="pm-label">Category</div><div class="pm-val">Website Design · UI/UX</div></div>
+    <div class="pm-item"><div class="pm-label">Industry</div><div class="pm-val">Wellness · Ayurveda</div></div>
+    <div class="pm-item"><div class="pm-label">Location</div><div class="pm-val">Kozhikode, Kerala</div></div>
+    <div class="pm-item"><div class="pm-label">Year</div><div class="pm-val">2022</div></div>
+  </div>
+  <div class="hero-media-wrap">
+    <img src="images/tigris-hero.webp" alt="Tigris Valley Website Design">
+  </div>
+</div>
+
+<!-- CONTENT -->
+<section class="proj-content">
+  <div class="pc-inner">
+    <div class="pc-overview">
+      <div class="pc-overview-text">
+        <h2>A digital sanctuary<br>as <em class="serif-italic">serene</em> as the retreat itself.</h2>
+        <p>Tigris Valley is one of Kerala's premier Ayurvedic and holistic wellness retreats — nestled near Kozhikode, inspired by the Western Ghats and the ancient Tigris River. Their vision: a seamless fusion of traditional healing wisdom with modern care.</p>
+        <p>We designed a website that mirrors this philosophy — calm, immersive, and effortlessly navigable. Every screen was crafted to guide visitors from inspiration to booking with the same sense of ease and trust that defines the Tigris Valley experience.</p>
+        <div class="pc-tags">
+          <span class="pc-tag">Website Design</span>
+          <span class="pc-tag">UI/UX</span>
+          <span class="pc-tag">Ayurveda</span>
+          <span class="pc-tag">Wellness</span>
+          <span class="pc-tag">Holistic Health</span>
+          <span class="pc-tag">Kerala</span>
+        </div>
+      </div>
+      <div class="pc-deliverables">
+        <h3>Deliverables</h3>
+        <div class="pc-del-list">
+          <div class="pc-del-item">Full website design (Figma)<i class="fa-solid fa-check"></i></div>
+          <div class="pc-del-item">UI/UX system &amp; components<i class="fa-solid fa-check"></i></div>
+          <div class="pc-del-item">Homepage &amp; about pages<i class="fa-solid fa-check"></i></div>
+          <div class="pc-del-item">Treatments &amp; programmes pages<i class="fa-solid fa-check"></i></div>
+          <div class="pc-del-item">Booking &amp; contact flow<i class="fa-solid fa-check"></i></div>
+          <div class="pc-del-item">Mobile responsive design<i class="fa-solid fa-check"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGE GRID -->
+<section class="proj-grid">
+  <div class="pg-inner">
+    <div class="pg-label">Design Showcase</div>
+    <div class="pg-grid">
+      <div class="pg-cell sq">
+        <img src="images/tigris-1.webp" alt="Tigris Valley homepage design">
+      </div>
+      <div class="pg-cell sq">
+        <img src="images/tigris-2.webp" alt="Tigris Valley treatments page">
+      </div>
+    </div>
+    <div class="pg-grid three" style="margin-top:14px">
+      <div class="pg-cell sq">
+        <img src="images/tigris-3.webp" alt="Tigris Valley about page">
+      </div>
+      <div class="pg-cell sq">
+        <img src="images/tigris-4.webp" alt="Tigris Valley mobile design">
+      </div>
+      <div class="pg-cell sq">
+        <img src="images/tigris-5.webp" alt="Tigris Valley booking UI">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT PROJECTS -->
+<section class="next-section">
+  <div class="ns-inner">
+    <div class="ns-header">
+      <div>
+        <div class="ns-label">Next Projects</div>
+        <h2 class="ns-h2">Keep <em class="serif-italic">exploring.</em></h2>
+      </div>
+      <a href="work.html" class="btn-ghost" data-hover>View All Work ↗</a>
+    </div>
+    <div class="ns-grid">
+      <a href="project-alpine.html" class="ns-card" data-hover>
+        <div class="ns-vis" style="background:linear-gradient(135deg,rgba(56,189,248,.15) 0%,var(--bg-soft) 100%)">
+          <img src="images/alpine-cover.webp" alt="Alpine Holidays">
+          <div class="ns-arrow">↗</div>
+        </div>
+        <div class="ns-tag">Website Design · UI/UX</div>
+        <div class="ns-title">Alpine Holidays</div>
+      </a>
+      <a href="project-goviaggo.html" class="ns-card" data-hover>
+        <div class="ns-vis" style="background:linear-gradient(135deg,rgba(77,212,168,.15) 0%,var(--bg-soft) 100%)">
+          <img src="images/goviaggo-cover.webp" alt="Goviaggo">
+          <div class="ns-arrow">↗</div>
+        </div>
+        <div class="ns-tag">Branding · Brand Guidelines</div>
+        <div class="ns-title">Goviaggo</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="ft-inner">
+    <div class="ft-cta">
+      <span class="chip"><span class="chip-dot"></span>Let's build something</span>
+      <h2 class="ft-h2">
+        <span class="reveal-mask" style="display:block"><span>Have an idea?</span></span>
+        <span class="reveal-mask" style="display:block"><span><em class="serif-italic">Let's make</em> it</span></span>
+        <span class="reveal-mask" style="display:block"><span class="text-stroke">unforgettable.</span></span>
+      </h2>
+      <div class="ft-btns">
+        <a href="tel:+917907590856" class="btn-mint" data-hover><i class="fa-solid fa-phone" style="font-size:.75rem"></i> Call Now</a>
+        <a href="https://wa.me/917907590856?text=Hi%20Krexlab" target="_blank" class="btn-ghost" data-hover><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>
+        <a href="https://mail.google.com/mail/?view=cm&to=hello@krexlab.in" target="_blank" class="btn-ghost" data-hover><i class="fa-regular fa-envelope" style="font-size:.8rem"></i> hello@krexlab.in</a>
+      </div>
+    </div>
+    <div class="ft-bar">
+      <div>
+        <div class="ft-copy">© 2026 Krexlab Studio</div>
+        <div class="ft-copy" style="margin-top:4px;opacity:.6">Crafted with care · Est. 2025</div>
+      </div>
+      <div class="ft-clock"><span class="ft-clock-dot"></span>Studio time · <span id="ft-clock">—</span> IST</div>
+      <div class="ft-socials">
+        <a href="https://instagram.com/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://linkedin.com/company/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://behance.net/krexlab" target="_blank" class="ft-soc-btn" data-hover><i class="fa-brands fa-behance"></i></a>
+      </div>
+    </div>
+    <div class="ft-brand">krexlab</div>
+  </div>
+</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+const curDot=document.getElementById('cursor-dot'),curRing=document.getElementById('cursor-ring');
+let mx=innerWidth/2,my=innerHeight/2,dx=mx,dy=my,rx=mx,ry=my;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+gsap.ticker.add(()=>{dx+=(mx-dx)*.55;dy+=(my-dy)*.55;rx+=(mx-rx)*.18;ry+=(my-ry)*.18;gsap.set(curDot,{x:dx,y:dy});gsap.set(curRing,{x:rx,y:ry})});
+document.querySelectorAll('a,button,[data-hover]').forEach(el=>{el.addEventListener('mouseenter',()=>curRing.classList.add('is-hover'));el.addEventListener('mouseleave',()=>curRing.classList.remove('is-hover'))});
+const canvas=document.getElementById('particle-canvas'),ctx=canvas.getContext('2d');
+let pts=[],frame=0;
+function resize(){const dpr=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const N=w<768?20:40,MAX=w<768?90:120;pts=Array.from({length:N},()=>{const x=Math.random()*w,y=Math.random()*h;return{x,y,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.1+.5,dx:0,dy:0,MAX}})}
+resize();window.addEventListener('resize',resize);
+function tick(){requestAnimationFrame(tick);frame++;if(innerWidth<768&&frame%2===0)return;const w=innerWidth,h=innerHeight;ctx.clearRect(0,0,w,h);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;p.dx=p.x;p.dy=p.y;ctx.beginPath();ctx.arc(p.dx,p.dy,p.r,0,Math.PI*2);ctx.fillStyle='rgba(77,212,168,.5)';ctx.fill()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].dx-pts[j].dx,pts[i].dy-pts[j].dy);if(d<pts[i].MAX){ctx.beginPath();ctx.moveTo(pts[i].dx,pts[i].dy);ctx.lineTo(pts[j].dx,pts[j].dy);ctx.strokeStyle=`rgba(77,212,168,${(1-d/pts[i].MAX)*.13})`;ctx.lineWidth=.5;ctx.stroke()}}}
+tick();
+const hdr=document.getElementById('main-header');let lastY=0;
+window.addEventListener('scroll',()=>{const s=scrollY;hdr.classList.toggle('scrolled',s>30);if(s>100&&s>lastY+2)hdr.classList.add('hide');else if(s<lastY-2)hdr.classList.remove('hide');lastY=s});
+const mobMenu=document.getElementById('mob-menu'),mobOverlay=document.getElementById('mob-overlay');
+function openMenu(){mobMenu.classList.add('open');mobOverlay.classList.add('show');gsap.fromTo('.mob-link',{x:24,opacity:0},{x:0,opacity:1,stagger:.08,duration:.65,ease:'power3.out',delay:.15})}
+function closeMenu(){mobMenu.classList.remove('open');mobOverlay.classList.remove('show')}
+document.getElementById('mob-btn').addEventListener('click',openMenu);
+document.getElementById('mob-close').addEventListener('click',closeMenu);
+mobOverlay.addEventListener('click',closeMenu);
+mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+window.addEventListener('load',()=>{
+  ScrollTrigger.refresh();
+  const tl=gsap.timeline({defaults:{ease:'power3.out'}});
+  tl.to('.proj-eyebrow',{y:0,opacity:1,duration:.8,delay:.2})
+    .to('.proj-h1 .reveal-mask>span',{y:'0%',duration:1.2,stagger:.1,ease:'power4.out'},'-=.5')
+    .to('.proj-meta',{y:0,opacity:1,duration:.8},'-=.4');
+  gsap.utils.toArray('.ns-card').forEach((c,i)=>{
+    gsap.to(c,{y:0,opacity:1,duration:.9,ease:'power3.out',delay:i*.12,scrollTrigger:{trigger:c,start:'top 85%'}});
+  });
+  gsap.fromTo('.ft-h2 .reveal-mask>span',{y:'110%'},{y:'0%',duration:1.2,stagger:.08,ease:'power4.out',scrollTrigger:{trigger:'footer',start:'top 80%'}});
+  gsap.fromTo('.ft-btns',{y:24,opacity:0},{y:0,opacity:1,duration:.9,ease:'power3.out',scrollTrigger:{trigger:'.ft-btns',start:'top 88%'}});
+});
+document.querySelectorAll('.btn-mint,.btn-ghost').forEach(btn=>{
+  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.28,y:(e.clientY-r.top-r.height/2)*.28,duration:.3,ease:'power2.out'})});
+  btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+});
+function updateClock(){const el=document.getElementById('ft-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
+setInterval(updateClock,1000);updateClock();
+(function(){
+  const loader=document.getElementById('page-loader');
+  if(!loader)return;
+  if(sessionStorage.getItem('visited')){loader.style.display='none';return}
+  document.body.style.overflow='hidden';
+  window.addEventListener('load',()=>{
+    sessionStorage.setItem('visited','1');
+    setTimeout(()=>{loader.classList.add('hide');setTimeout(()=>{document.body.style.overflow='';loader.style.display='none'},650)},900);
+  });
+})();
+</script>
+</body>
+</html>
