@@ -5,10 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Krexlab — Creative Studio</title>
 <meta name="description" content="Krexlab is an independent design & AI studio crafting brand systems, websites and motion content for ambitious teams.">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
+<meta name="theme-color" content="#07181f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 <style>
 /* ─── RESET & BASE ─── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -860,7 +865,7 @@ footer{
       <a href="project-boxigo.html" class="work-card card-lift" id="boxigo-card" data-hover>
         <div class="work-card-inner" style="position:relative">
           <!-- Cover image — visible by default -->
-          <img src="images/boxigo-cover.jpg" id="boxigo-img" alt="Boxigo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
+          <img src="images/boxigo-cover.jpg" id="boxigo-img" alt="Boxigo" width="1200" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
           <!-- Video — hidden by default, plays on scroll -->
           <video
             src="images/boxigo-cover.mp4"
@@ -868,7 +873,7 @@ footer{
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="none"
             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"
           ></video>
           <div class="wc-arrow">↗</div>
@@ -885,8 +890,8 @@ footer{
       <!-- Card 2 — Goviaggo -->
       <a href="project-goviaggo.html" class="work-card card-lift" id="goviaggo-card" data-hover>
         <div class="work-card-inner" style="position:relative">
-          <img src="images/goviaggo-cover.webp" id="goviaggo-img" alt="Goviaggo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
-          <video src="images/goviaggo-cover.mp4" id="goviaggo-vid" muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
+          <img src="images/goviaggo-cover.webp" id="goviaggo-img" alt="Goviaggo" width="1200" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
+          <video src="images/goviaggo-cover.mp4" id="goviaggo-vid" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
           <div class="wc-arrow">↗</div>
         </div>
         <div class="wc-info">
@@ -901,8 +906,8 @@ footer{
       <!-- Card 3 — Playspots -->
       <a href="project-playspots.html" class="work-card card-lift" id="playspots-card" data-hover>
         <div class="work-card-inner" style="position:relative">
-          <img src="images/playspots-cover.webp" id="playspots-img" alt="Playspots" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
-          <video src="images/playspots-cover.mp4" id="playspots-vid" muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
+          <img src="images/playspots-cover.webp" id="playspots-img" alt="Playspots" width="1200" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
+          <video src="images/playspots-cover.mp4" id="playspots-vid" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
           <div class="wc-arrow">↗</div>
         </div>
         <div class="wc-info">
@@ -917,8 +922,8 @@ footer{
       <!-- Card 4 — Sastra -->
       <a href="project-sastra.html" class="work-card card-lift" id="sastra-card" data-hover>
         <div class="work-card-inner" style="position:relative">
-          <img src="images/sastra-cover.webp" id="sastra-img" alt="Sastra" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
-          <video src="images/sastra-cover.mp4" id="sastra-vid" muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
+          <img src="images/sastra-cover.webp" id="sastra-img" alt="Sastra" width="1200" height="900" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s;pointer-events:none">
+          <video src="images/sastra-cover.mp4" id="sastra-vid" muted loop playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s;pointer-events:none"></video>
           <div class="wc-arrow">↗</div>
         </div>
         <div class="wc-info">
@@ -1119,8 +1124,8 @@ footer{
 
 </div><!-- /page -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
