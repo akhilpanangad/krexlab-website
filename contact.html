@@ -125,7 +125,7 @@ header.hide{transform:translateY(-100%)}
   .cf-title{order:-1;padding:6vh 0 0;margin-bottom:0}
   .cp-right{padding-top:4vh}
 }
-.cp-eyebrow{margin-bottom:24px;opacity:0;transform:translateY(16px)}
+.cp-eyebrow{margin-bottom:24px;opacity:0;transform:translateY(8px)}
 .cp-h1{
   font-family:'Outfit',sans-serif;font-weight:300;
   font-size:clamp(2.8rem,4.5vw,5.5rem);
@@ -140,7 +140,7 @@ header.hide{transform:translateY(-100%)}
 }
 
 /* contact info rows */
-.cp-info{display:flex;flex-direction:column;gap:0;opacity:0;transform:translateY(16px)}
+.cp-info{display:flex;flex-direction:column;gap:0;opacity:0;transform:translateY(8px)}
 .cp-info-item{
   display:flex;align-items:center;gap:14px;
   padding:16px 0;border-bottom:1px solid var(--border);
@@ -198,7 +198,7 @@ header.hide{transform:translateY(-100%)}
 .cf-title .serif-italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--mint)}
 
 /* form */
-.contact-form{display:flex;flex-direction:column;gap:20px;opacity:0;transform:translateY(20px)}
+.contact-form{display:flex;flex-direction:column;gap:20px;opacity:0;transform:translateY(10px)}
 
 .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:600px){.cf-row{grid-template-columns:1fr}}
@@ -518,14 +518,14 @@ mobMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
 /* PAGE ANIMATIONS */
 window.addEventListener('load',()=>{
   const tl = gsap.timeline({defaults:{ease:'power3.out'}});
-  tl.to('.cp-eyebrow',   {y:0, opacity:1, duration:.8, delay:.2})
-    .to('.cp-h1 .reveal-mask>span', {y:'0%', duration:1.1, stagger:.1, ease:'power4.out'}, '-=.5')
-    .to('.cp-desc',      {y:0, opacity:1, duration:.8}, '-=.4')
-    .to('#cp-avail',     {opacity:1, duration:.7}, '-=.3')
-    .to('#cp-info',      {y:0, opacity:1, duration:.8}, '-=.3')
-    .to('#cp-socials',   {opacity:1, duration:.7}, '-=.2')
-    .to('.cf-title',     {y:0, opacity:1, duration:.8}, '-=.8')
-    .to('.contact-form', {y:0, opacity:1, duration:.9}, '-=.5');
+  tl.to('.cp-eyebrow',   {y:0, opacity:1, duration:.4, delay:.1})
+    .to('.cp-h1 .reveal-mask>span', {y:'0%', duration:.7, stagger:.06, ease:'power4.out'}, '-=.3')
+    .to('.cp-desc',      {y:0, opacity:1, duration:.4}, '-=.3')
+    .to('#cp-avail',     {opacity:1, duration:.3}, '-=.2')
+    .to('#cp-info',      {y:0, opacity:1, duration:.4}, '-=.2')
+    .to('#cp-socials',   {opacity:1, duration:.3}, '-=.2')
+    .to('.cf-title',     {y:0, opacity:1, duration:.4}, '-=.5')
+    .to('.contact-form', {y:0, opacity:1, duration:.5}, '-=.3');
 });
 
 /* FORM SUBMIT — stay on page, show success */
